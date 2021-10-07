@@ -95,7 +95,24 @@ class Task:
             sys.exit(1)
 
     def task_exists(self):
-        return self.source_code.exists() or self.task_folder.exists()
+        """checks if task exist
+
+        Returns:
+            0: neither source code nor test data exists
+            1: source code exists
+            2: test data exists
+            3: both exists
+        """
+        result = 0
+        if self.source_code.exists():
+            result = 1
+        
+        if self.task_folder.exists():
+            if result != 0:
+                result = 3
+            else:
+                result = 2
+        return result
 
     def overwrite(self):
         if self.task_folder.exists():

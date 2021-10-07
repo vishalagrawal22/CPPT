@@ -9,15 +9,25 @@ def manage(filename, base_folder, force):
     extension = file_path.suffix
     filename_without_extension = file_path.stem
     if extension not in [".py", ".java", ".cpp"]:
-        click.secho(f"language {file_path.suffix} is not supported (.py, .java, .cpp are only supported)", err=True, fg="red")
+        click.secho(f"Language {file_path.suffix} is not supported (.py, .java, .cpp are only supported)", err=True, fg="red")
         sys.exit(1)
     else:
         task = Task(base_folder, filename_without_extension, extension)
-        if task.task_exists():
+        task_status = task.task_exists()
+        if task_status != 0:
             if not force:
-                click.secho("Source code or test data exist with the same name", err=True, fg="red")
-                click.secho("To overwrite them specify --force option", err=True, fg="red")
-                sys.exit(1) 
+                if task_status == 1:
+                    click.secho("Source code already exists", err=True, fg="red")
+                    click.secho("To overwrite it specify --force option", err=True, fg="red")
+                    sys.exit(1) 
+                elif task_status == 2:
+                    click.secho("Test data already exists", err=True, fg="red")
+                    click.secho("To overwrite it specify --force option", err=True, fg="red")
+                    sys.exit(1) 
+                else:
+                    click.secho("Both source code and test data already exists", err=True, fg="red")
+                    click.secho("To overwrite them specify --force option", err=True, fg="red")
+                    sys.exit(1) 
             else:
                 task.overwrite()
         task.create_task()
