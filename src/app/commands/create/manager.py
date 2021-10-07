@@ -18,16 +18,13 @@ def manage(filename, base_folder, force):
             if not force:
                 if task_status == 1:
                     click.secho("Source code already exists", err=True, fg="red")
-                    click.secho("To overwrite it specify --force option", err=True, fg="red")
-                    sys.exit(1) 
                 elif task_status == 2:
                     click.secho("Test data already exists", err=True, fg="red")
-                    click.secho("To overwrite it specify --force option", err=True, fg="red")
-                    sys.exit(1) 
                 else:
                     click.secho("Both source code and test data already exists", err=True, fg="red")
-                    click.secho("To overwrite them specify --force option", err=True, fg="red")
-                    sys.exit(1) 
+                
+                click.secho("To overwrite existing files specify --force option", err=True, fg="red")
+                sys.exit(1) 
             else:
                 task.overwrite()
         task.create_task()
