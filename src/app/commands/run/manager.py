@@ -21,7 +21,7 @@ def get_command(lang):
 
 def write_to_file(file_path, text):
     with open(file_path, "w") as file:
-        file.write(text + "\n")
+        file.write(text)
 
 
 def read_from_file(file_path):
