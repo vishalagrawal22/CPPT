@@ -5,7 +5,7 @@ import re
 
 from pathlib import Path
 
-from ...internal.folder_manager import Task
+from ...internal.folder_manager import Task, delete_folder
 
 # checks if file is empty (only contains white spaces)
 def is_file_empty(file_path):
@@ -111,7 +111,13 @@ def print_file(file_path, is_error=False):
     click.echo("")
 
 
+def clear_last_run_data(task):
+    delete_folder(task.last_run_folder)
+    task.last_run_folder.mkdir()
+
 def judge(task, filename_without_extension, extension, base_folder):
+    clear_last_run_data(task)
+
     tc_list = []
     for tc in task.tc_folder.iterdir():
         tc = tc.name
