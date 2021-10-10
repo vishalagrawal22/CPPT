@@ -5,30 +5,12 @@ import re
 
 from pathlib import Path
 
-from ...internal.folder_manager import Task, delete_folder
-
-# checks if file is empty (only contains white spaces)
-def is_file_empty(file_path):
-    content = open(file_path, 'r').read()
-    if re.search(r'^\s*$', content):
-        return True
-    return False
+from ...internal.folder_manager import Task, clear_folder
+from ...internal.file_manager import read_from_file, write_to_file, print_file, is_file_empty
 
 
 def get_command(lang):
     pass
-
-
-def write_to_file(file_path, text):
-    with open(file_path, "w") as file:
-        file.write(text)
-
-
-def read_from_file(file_path):
-    file = open(file_path, "r")
-    text = "".join(file.readlines())
-    file.close()
-    return text
 
 
 def cpp_compile(source_code_path, error_path):
@@ -43,7 +25,7 @@ def cpp_compile(source_code_path, error_path):
 
 
 def cpp_run(exec_path, input_path, output_path, error_path):
-    run_data = subprocess.run([exec_path.absolute()], input=read_from_file(
+    run_data = subprocess.run([exec_path.resolve()], input=read_from_file(
         input_path), capture_output=True, text=True)
     write_to_file(error_path, run_data.stderr)
     write_to_file(output_path, run_data.stdout)
@@ -63,7 +45,7 @@ def java_compile(source_code_path, error_path):
 
 
 def java_run(exec_path, input_path, output_path, error_path):
-    run_data = subprocess.run(["java", "-cp", exec_path.parent.absolute(), exec_path.stem], input=read_from_file(
+    run_data = subprocess.run(["java", "-cp", exec_path.parent.resolve(), exec_path.stem], input=read_from_file(
         input_path), capture_output=True, text=True)
     write_to_file(error_path, run_data.stderr)
     write_to_file(output_path, run_data.stdout)
@@ -97,26 +79,8 @@ compile_func = {
 }
 
 
-def print_file(file_path, is_error=False):
-    if not file_path.exists():
-        click.secho(f"File at {file_path} does not exist", fg="red", err=True)
-        sys.exit(1)
-    elif not file_path.is_file():
-        click.secho(f"{file_path} is not a file", fg="red", err=True)
-        sys.exit(1)
-
-    with open(file_path, 'r') as file:
-        for line in file.readlines():
-            click.secho(line, fg="red", err=is_error, nl=False)       
-    click.echo("")
-
-
-def clear_last_run_data(task):
-    delete_folder(task.last_run_folder)
-    task.last_run_folder.mkdir()
-
 def judge(task, filename_without_extension, extension, base_folder):
-    clear_last_run_data(task)
+    clear_folder(task.last_run_folder)
 
     tc_list = []
     for tc in task.tc_folder.iterdir():

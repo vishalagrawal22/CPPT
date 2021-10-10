@@ -14,6 +14,14 @@ def delete_folder(path):
     path.rmdir()
 
 
+def clear_folder(path):
+    for sub in path.iterdir():
+        if sub.is_dir():
+            delete_folder(sub)
+        else:
+            sub.unlink()
+
+
 class Task:
     def __init__(self, base_folder, task_name, extension):
         self.source_code = base_folder / task_name
@@ -106,7 +114,7 @@ class Task:
         result = 0
         if self.source_code.exists():
             result = 1
-        
+
         if self.task_folder.exists():
             if result != 0:
                 result = 3
