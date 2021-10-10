@@ -6,10 +6,10 @@ name = "pypi"
 [packages]
 click = "*"
 cppt = {editable = true, path = "."}
+pyyaml = "*"
 
 [dev-packages]
 autopep8 = "*"
-cppt = {editable = true, path = "."}
 
 [requires]
 python_version = "3.8"

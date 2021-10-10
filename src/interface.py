@@ -29,3 +29,8 @@ def fetch(base_folder, force):
 @click.option("-p", "--path", "base_folder", show_default=True, default=Path("."), type=click.Path(exists=True, path_type=Path, writable=True))
 def run(filename, base_folder):
     run_manage(filename, base_folder)
+
+@cli.command()
+@click.option("--reset", "-r", is_flag=True)
+def config(reset):
+    config_manage(reset)
