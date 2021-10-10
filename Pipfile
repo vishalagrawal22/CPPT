@@ -9,7 +9,8 @@ cppt = {editable = true, path = "."}
 pyyaml = "*"
 
 [dev-packages]
-autopep8 = "*"
+isort = "*"
+yapf = "*"
 
 [requires]
 python_version = "3.8"

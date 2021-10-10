@@ -1,7 +1,8 @@
 import re
-import click
 import sys
 from pathlib import Path
+
+import click
 
 
 # checks if file is empty (only contains white spaces)

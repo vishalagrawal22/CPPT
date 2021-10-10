@@ -8,5 +8,5 @@ def manage(reset):
         click.secho("Resetting config file to default version", fg="cyan")
         create_config()
     else:
-        click.secho(
-            f"Config file is located at {get_config_path()}", fg="cyan")
+        click.secho(f"Config file is located at {get_config_path()}",
+                    fg="cyan")

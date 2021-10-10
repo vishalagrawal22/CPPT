@@ -1,6 +1,7 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
-import click
 import json
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+import click
 
 
 class postRequestHandler(BaseHTTPRequestHandler):
@@ -8,8 +9,7 @@ class postRequestHandler(BaseHTTPRequestHandler):
         global task_data
         data_length = int(self.headers['Content-Length'])
         self.data = self.rfile.read(data_length)
-        click.secho("Received problem data",
-                    fg="cyan")
+        click.secho("Received problem data", fg="cyan")
         task_data = json.loads(self.data)
 
 
