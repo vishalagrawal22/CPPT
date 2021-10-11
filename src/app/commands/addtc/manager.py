@@ -7,7 +7,7 @@ from ...internal.file_manager import read_from_file
 from ...internal.folder_manager import Task
 
 
-def manage(filename, input, output, base_folder):
+def manage(filename, input_path, output_path, base_folder):
     file_path = base_folder / filename
     extension = file_path.suffix[1:]
     filename_without_extension = file_path.stem
@@ -43,32 +43,6 @@ def manage(filename, input, output, base_folder):
                 fg="red")
             click.secho(
                 "Caution: do not forget to copy any code in source file before using --force option",
-                err=True,
-                fg="red")
-            sys.exit(1)
-        input_path = base_folder / input
-        output_path = base_folder / output
-        if not input_path.exists():
-            click.secho(
-                f"Test input file doesnot exist at {input_path.resolve()}",
-                err=True,
-                fg="red")
-            sys.exit(1)
-        if not input_path.is_file():
-            click.secho(
-                f"Test input should be a file ({input_path.resolve()} is not a file)",
-                err=True,
-                fg="red")
-            sys.exit(1)
-        if not output_path.exists():
-            click.secho(
-                f"Test output file doesnot exist at {output_path.resolve()}",
-                err=True,
-                fg="red")
-            sys.exit(1)
-        if not output_path.is_file():
-            click.secho(
-                f"Test output should be a file ({output_path.resolve()} is not a file)",
                 err=True,
                 fg="red")
             sys.exit(1)

@@ -96,6 +96,10 @@ def judge(task, filename_without_extension, extension, base_folder,
 
     tc_list = task.get_tc_list()
 
+    if tc_list == []:
+        click.secho(f"No testcase to run!", fg="red")
+        sys.exit(1)
+
     source_code_path = (base_folder /
                         filename_without_extension).with_suffix("." +
                                                                 extension)

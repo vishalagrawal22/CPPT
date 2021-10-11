@@ -31,6 +31,12 @@ def check_config_data(data):
                 err=True,
                 fg="red")
             is_invalid = True
+        if not default_base_folder_path.is_dir():
+            click.secho(
+                f"The default base folder ({default_base_folder_path.resolve()}) specified in config file is not a directory",
+                err=True,
+                fg="red")
+            is_invalid = True
     else:
         click.secho("The default base folder was not found in config",
                     err=True,
