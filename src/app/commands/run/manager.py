@@ -126,6 +126,9 @@ def judge(task, filename_without_extension, extension, base_folder,
             if not is_file_empty(compilation_error_path):
                 click.secho(f"Compilation Warning:\n", fg="cyan")
                 print_file(compilation_error_path)
+    else:
+        click.secho(f"Running the source code with command:", fg="cyan")
+        click.secho(config_data["language"][extension]["command"] + "\n")
 
     for num in tc_list:
         in_path = task.tc_folder / f"in{num}.txt"
