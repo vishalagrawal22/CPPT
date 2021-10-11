@@ -9,7 +9,11 @@ setup(
         'click',
         'pyyaml',
     ],
-    packages=["cppt.utils", "cppt.commands.create", "cppt.commands.fetch", "cppt.commands.addtc", "cppt.commands.run", "cppt.commands.config", "cppt.commands"],
+    packages=[
+        "cppt.utils", "cppt.commands.create", "cppt.commands.fetch",
+        "cppt.commands.addtc", "cppt.commands.run", "cppt.commands.config",
+        "cppt.commands"
+    ],
     python_requires='>=3.6',
     entry_points={
         'console_scripts': [
