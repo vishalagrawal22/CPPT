@@ -3,8 +3,8 @@ from pathlib import Path
 
 import click
 
-from ...internal.file_manager import read_from_file
-from ...internal.folder_manager import Task
+from ...utils.file_manager import read_from_file
+from ...utils.folder_manager import Task
 
 
 def manage(filename, input_path, output_path, base_folder):

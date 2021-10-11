@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from ..internal.file_manager import read_from_file, write_to_file
+from ..utils.file_manager import read_from_file, write_to_file
 
 
 def delete_folder(path):

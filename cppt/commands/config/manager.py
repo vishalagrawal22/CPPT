@@ -1,6 +1,6 @@
 import click
 
-from ...internal.config_manager import create_config, get_config_path
+from ...utils.config_manager import create_config, get_config_path
 
 
 def manage(reset):

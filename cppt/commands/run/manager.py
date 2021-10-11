@@ -5,9 +5,9 @@ from pathlib import Path
 
 import click
 
-from ...internal.file_manager import (is_file_empty, print_file,
-                                      read_from_file, write_to_file)
-from ...internal.folder_manager import Task, clear_folder
+from ...utils.file_manager import (is_file_empty, print_file, read_from_file,
+                                   write_to_file)
+from ...utils.folder_manager import Task, clear_folder
 
 
 def get_command(lang):

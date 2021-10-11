@@ -11,6 +11,7 @@ pyyaml = "*"
 [dev-packages]
 isort = "*"
 yapf = "*"
+twine = "*"
 
 [requires]
 python_version = "3.8"

@@ -2,7 +2,8 @@ from pathlib import Path
 
 import click
 
-from .app import *
+from ..commands import *
+from ..utils.config_manager import get_config_data
 
 
 @click.group()

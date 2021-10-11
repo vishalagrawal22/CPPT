@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from ...internal.folder_manager import Task
+from ...utils.folder_manager import Task
 
 
 def manage(filename, base_folder, force, config_data):
