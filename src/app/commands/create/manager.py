@@ -22,5 +22,5 @@ def manage(filename, base_folder, force, config_data):
         task.create_task(
             template_path=config_data["language"][extension]["template"])
         click.secho(f"Successfully created task", fg="green")
-        click.secho(f"Source code is located at {task.source_code}",
+        click.secho(f"Source code is located at {task.source_code.resolve()}",
                     fg="green")

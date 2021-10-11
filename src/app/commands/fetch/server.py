@@ -16,8 +16,11 @@ class postRequestHandler(BaseHTTPRequestHandler):
 def run_server():
     PORT = 1327
     server = HTTPServer(("localhost", PORT), postRequestHandler)
+    click.secho(
+        "Currently only problem parsing is supported (contest parsing is not supported)",
+        fg="cyan")
     click.secho(f"Listening on port {PORT}", fg="cyan")
-    click.secho("Waiting for competitive companion extension to send data",
+    click.secho("Waiting for competitive companion extension to send data\n",
                 fg="cyan")
     server.handle_request()
 

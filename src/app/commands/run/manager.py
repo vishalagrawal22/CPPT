@@ -94,16 +94,7 @@ def judge(task, filename_without_extension, extension, base_folder,
           config_data):
     clear_folder(task.last_run_folder)
 
-    tc_list = []
-    for tc in task.tc_folder.iterdir():
-        tc = tc.name
-        if (tc.startswith("in")):
-            num = int(tc[2:][:-4])
-            ans_path = task.tc_folder / f"ans{num}.txt"
-            if ans_path.is_file():
-                tc_list.append(num)
-
-    tc_list.sort()
+    tc_list = task.get_tc_list()
 
     source_code_path = (base_folder /
                         filename_without_extension).with_suffix("." +

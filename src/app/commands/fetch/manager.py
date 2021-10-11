@@ -31,4 +31,5 @@ def manage(base_folder, force, config_data):
     task.safe_overwrite(force)
     task.create_task(tests, config_data["language"][extension]["template"])
     click.secho(f"Successfully created task", fg="green")
-    click.secho(f"Source code is located at {task.source_code}", fg="green")
+    click.secho(f"Source code is located at {task.source_code.resolve()}",
+                fg="green")

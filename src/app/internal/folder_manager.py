@@ -83,9 +83,9 @@ class Task:
             self.add_tests(tests)
             click.secho("Added Testcases", fg="cyan")
 
-    def add_tests(self, tests):
+    def add_tests(self, tests, tc_number=1):
         try:
-            testcase_number = 1
+            testcase_number = tc_number
             for individual_testcase in tests:
                 is_input_file = 1
                 for testcase_element in individual_testcase:
@@ -128,7 +128,7 @@ class Task:
                 click.secho("Deleted the existing task folder", fg="cyan")
             except:
                 click.secho(
-                    f"Unable to delete task folder at {self.task_folder}",
+                    f"Unable to delete task folder at {self.task_folder.resolve()}",
                     fg="red",
                     err=True)
                 sys.exit(1)
@@ -139,7 +139,7 @@ class Task:
                 click.secho("Deleted the existing source code file", fg="cyan")
             except:
                 click.secho(
-                    f"Unable to delete source code at {self.source_code}",
+                    f"Unable to delete source code at {self.source_code.resolve()}",
                     fg="red",
                     err=True)
                 sys.exit(1)
@@ -150,17 +150,17 @@ class Task:
             if not force:
                 if task_status == 1:
                     click.secho(
-                        f"Source code already exists at {self.source_code}",
+                        f"Source code already exists at {self.source_code.resolve()}",
                         err=True,
                         fg="red")
                 elif task_status == 2:
                     click.secho(
-                        f"Test data already exists at {self.tc_folder}",
+                        f"Task folder already exists at {self.task_folder.resolve()}",
                         err=True,
                         fg="red")
                 else:
                     click.secho(
-                        f"Both source code and test data already exists at {self.source_code} and {self.task_folder} respectively",
+                        f"Both source code and task folder already exists at {self.source_code.resolve()} and {self.task_folder.resolve()} respectively",
                         err=True,
                         fg="red")
 
@@ -171,3 +171,15 @@ class Task:
                 sys.exit(1)
             else:
                 self.overwrite()
+
+    def get_tc_list(self):
+        tc_list = []
+        for tc in self.tc_folder.iterdir():
+            tc = tc.name
+            if (tc.startswith("in")):
+                num = int(tc[2:][:-4])
+                ans_path = self.tc_folder / f"ans{num}.txt"
+                if ans_path.is_file():
+                    tc_list.append(num)
+        tc_list.sort()
+        return tc_list

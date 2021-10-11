@@ -1,3 +1,4 @@
+from .commands.addtc.manager import manage as addtc_manage
 from .commands.config.manager import manage as config_manage
 from .commands.create.manager import manage as create_manage
 from .commands.fetch.manager import manage as fetch_manage

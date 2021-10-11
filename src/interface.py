@@ -52,6 +52,21 @@ def run(filename, base_folder):
 
 
 @cli.command()
+@click.argument("filename", type=str)
+@click.argument("input", type=str)
+@click.argument("output", type=str)
+@click.option("-p",
+              "--path",
+              "base_folder",
+              default=None,
+              type=click.Path(exists=True, path_type=Path, writable=True))
+def addtc(filename, input, output, base_folder):
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+    addtc_manage(filename, input, output, base_folder)
+
+
+@cli.command()
 @click.option("--reset", "-r", is_flag=True)
 def config(reset):
     config_manage(reset)

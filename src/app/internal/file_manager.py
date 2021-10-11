@@ -27,10 +27,12 @@ def read_from_file(file_path):
 
 def print_file(file_path, is_error=False):
     if not file_path.exists():
-        click.secho(f"File at {file_path} does not exist", fg="red", err=True)
+        click.secho(f"File at {file_path.resolve()} does not exist",
+                    fg="red",
+                    err=True)
         sys.exit(1)
     elif not file_path.is_file():
-        click.secho(f"{file_path} is not a file", fg="red", err=True)
+        click.secho(f"{file_path.resolve()} is not a file", fg="red", err=True)
         sys.exit(1)
 
     with open(file_path, 'r') as file:
