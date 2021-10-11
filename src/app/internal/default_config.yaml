@@ -1,4 +1,36 @@
-a: 1
-b:
-  c: 3
-  d: 4
+# absolute or relative path to the folder
+# where you want the source code (folder should already exist)
+# example: ~/cp/practice (saves code to $HOME/cp/practice)
+# default: current directory
+default_base_folder: .
+
+# the file extension of source code file created by cppt fetch command
+# valid options: cpp, py, java
+# default: cpp
+default_language: cpp
+
+# programming language related settings 
+
+# command represents the command used to compile or run your source code
+
+# template represents 
+# absolute path to your boiler plate code for the particular language
+# the boiler plate code will be copied to the source code of that language
+# which were created by cppt
+# example: ~/cp/templates/template.cpp
+# default: empty file
+
+language:
+  cpp:
+    # do not include -o flag
+    command: g++ -std=gnu++17 -O2 -Wall -Wextra -Wshadow
+    template: null
+
+  java:
+    # do not include -cp flag
+    command: javac
+    template: null
+
+  py:
+    command: python3
+    template: null

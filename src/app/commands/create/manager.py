@@ -6,39 +6,21 @@ import click
 from ...internal.folder_manager import Task
 
 
-def manage(filename, base_folder, force):
+def manage(filename, base_folder, force, config_data):
     file_path = base_folder / filename
-    extension = file_path.suffix
+    extension = file_path.suffix[1:]
     filename_without_extension = file_path.stem
-    if extension not in [".py", ".java", ".cpp"]:
+    if extension not in ["py", "java", "cpp"]:
         click.secho(
-            f"Language {file_path.suffix} is not supported (.py, .java, .cpp are only supported)",
+            f"Language {extension} is not supported (python(py), java, c++(cpp) are only supported)",
             err=True,
             fg="red")
         sys.exit(1)
     else:
         task = Task(base_folder, filename_without_extension, extension)
-        task_status = task.task_exists()
-        if task_status != 0:
-            if not force:
-                if task_status == 1:
-                    click.secho("Source code already exists",
-                                err=True,
-                                fg="red")
-                elif task_status == 2:
-                    click.secho("Test data already exists", err=True, fg="red")
-                else:
-                    click.secho(
-                        "Both source code and test data already exists",
-                        err=True,
-                        fg="red")
-
-                click.secho(
-                    "To overwrite existing files specify --force option",
-                    err=True,
-                    fg="red")
-                sys.exit(1)
-            else:
-                task.overwrite()
-        task.create_task()
-        click.secho("Successfully created task", fg="green")
+        task.safe_overwrite(force)
+        task.create_task(
+            template_path=config_data["language"][extension]["template"])
+        click.secho(f"Successfully created task", fg="green")
+        click.secho(f"Source code is located at {task.source_code}",
+                    fg="green")

@@ -3,6 +3,8 @@ from pathlib import Path
 
 import click
 
+from ..internal.file_manager import read_from_file, write_to_file
+
 
 def delete_folder(path):
     for sub in path.iterdir():
@@ -24,7 +26,7 @@ def clear_folder(path):
 class Task:
     def __init__(self, base_folder, task_name, extension):
         self.source_code = base_folder / task_name
-        self.source_code = self.source_code.with_suffix(extension)
+        self.source_code = self.source_code.with_suffix("." + extension)
         self.cppt_root_folder = base_folder / ".cppt"
         self.task_folder = self.cppt_root_folder / task_name
         self.tc_folder = self.task_folder / "tc"
@@ -40,11 +42,13 @@ class Task:
                         err=True)
             sys.exit(1)
 
-    def create_task(self, tests=None):
+    def create_task(self, tests=None, template_path=None):
         if not self.cppt_root_folder.exists():
             self.create_root()
         try:
             self.source_code.touch()
+            if template_path is not None:
+                write_to_file(self.source_code, read_from_file(template_path))
             click.secho("Created source code file", fg="cyan")
         except Exception:
             click.secho(f"Unable to create source code file",
@@ -139,3 +143,31 @@ class Task:
                     fg="red",
                     err=True)
                 sys.exit(1)
+
+    def safe_overwrite(self, force):
+        task_status = self.task_exists()
+        if task_status != 0:
+            if not force:
+                if task_status == 1:
+                    click.secho(
+                        f"Source code already exists at {self.source_code}",
+                        err=True,
+                        fg="red")
+                elif task_status == 2:
+                    click.secho(
+                        f"Test data already exists at {self.tc_folder}",
+                        err=True,
+                        fg="red")
+                else:
+                    click.secho(
+                        f"Both source code and test data already exists at {self.source_code} and {self.task_folder} respectively",
+                        err=True,
+                        fg="red")
+
+                click.secho(
+                    "To overwrite existing files specify --force option",
+                    err=True,
+                    fg="red")
+                sys.exit(1)
+            else:
+                self.overwrite()

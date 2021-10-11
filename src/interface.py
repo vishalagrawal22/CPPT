@@ -7,7 +7,8 @@ from .app import *
 
 @click.group()
 def cli():
-    pass
+    global config_data
+    config_data = get_config_data()
 
 
 @cli.command()
@@ -15,24 +16,26 @@ def cli():
 @click.option("-p",
               "--path",
               "base_folder",
-              show_default=True,
-              default=Path("."),
+              default=None,
               type=click.Path(exists=True, path_type=Path, writable=True))
 @click.option("--force", is_flag=True)
 def create(filename, base_folder, force):
-    create_manage(filename, base_folder, force)
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+    create_manage(filename, base_folder, force, config_data)
 
 
 @cli.command()
 @click.option("-p",
               "--path",
               "base_folder",
-              show_default=True,
-              default=Path("."),
+              default=None,
               type=click.Path(exists=True, path_type=Path, writable=True))
 @click.option("--force", is_flag=True)
 def fetch(base_folder, force):
-    fetch_manage(base_folder, force)
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+    fetch_manage(base_folder, force, config_data)
 
 
 @cli.command()
@@ -40,11 +43,12 @@ def fetch(base_folder, force):
 @click.option("-p",
               "--path",
               "base_folder",
-              show_default=True,
-              default=Path("."),
+              default=None,
               type=click.Path(exists=True, path_type=Path, writable=True))
 def run(filename, base_folder):
-    run_manage(filename, base_folder)
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+    run_manage(filename, base_folder, config_data)
 
 
 @cli.command()

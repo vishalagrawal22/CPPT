@@ -14,14 +14,12 @@ def get_command(lang):
     pass
 
 
-def cpp_compile(source_code_path, error_path):
+def cpp_compile(source_code_path, error_path, command):
     file_name_without_extension = source_code_path.stem
     exec_path = error_path.parent / file_name_without_extension
-
-    compilation_data = subprocess.run(
-        ["g++-11", source_code_path, "-o", exec_path],
-        capture_output=True,
-        text=True)
+    command = command.split()
+    command.extend([source_code_path, "-o", exec_path])
+    compilation_data = subprocess.run(command, capture_output=True, text=True)
     write_to_file(error_path, compilation_data.stderr)
 
     return [exec_path, compilation_data.returncode]
@@ -37,15 +35,13 @@ def cpp_run(exec_path, input_path, output_path, error_path):
     return run_data.returncode
 
 
-def java_compile(source_code_path, error_path):
+def java_compile(source_code_path, error_path, command):
     file_name_without_extension = source_code_path.stem
     last_run_path = error_path.parent
     exec_path = last_run_path / file_name_without_extension
-
-    compilation_data = subprocess.run(
-        ["javac", source_code_path, "-d", last_run_path],
-        capture_output=True,
-        text=True)
+    command = command.split()
+    command.extend([source_code_path, "-d", last_run_path])
+    compilation_data = subprocess.run(command, capture_output=True, text=True)
     write_to_file(error_path, compilation_data.stderr)
 
     return [exec_path, compilation_data.returncode]
@@ -64,8 +60,10 @@ def java_run(exec_path, input_path, output_path, error_path):
 
 
 # exec path incase of interpreted language is source code path
-def py_run(source_code_path, input_path, output_path, error_path):
-    run_data = subprocess.run(["python3", source_code_path],
+def py_run(source_code_path, input_path, output_path, error_path, command):
+    command = command.split()
+    command.extend([source_code_path])
+    run_data = subprocess.run(command,
                               input=read_from_file(input_path),
                               capture_output=True,
                               text=True)
@@ -75,24 +73,25 @@ def py_run(source_code_path, input_path, output_path, error_path):
 
 
 is_interpreted = {
-    ".py": True,
-    ".java": False,
-    ".cpp": False,
+    "py": True,
+    "java": False,
+    "cpp": False,
 }
 
 run_func = {
-    ".py": py_run,
-    ".java": java_run,
-    ".cpp": cpp_run,
+    "py": py_run,
+    "java": java_run,
+    "cpp": cpp_run,
 }
 
 compile_func = {
-    ".java": java_compile,
-    ".cpp": cpp_compile,
+    "java": java_compile,
+    "cpp": cpp_compile,
 }
 
 
-def judge(task, filename_without_extension, extension, base_folder):
+def judge(task, filename_without_extension, extension, base_folder,
+          config_data):
     clear_folder(task.last_run_folder)
 
     tc_list = []
@@ -107,17 +106,26 @@ def judge(task, filename_without_extension, extension, base_folder):
     tc_list.sort()
 
     source_code_path = (base_folder /
-                        filename_without_extension).with_suffix(extension)
+                        filename_without_extension).with_suffix("." +
+                                                                extension)
     compilation_error_path = task.last_run_folder / "compilation_error.txt"
 
     exec_path = Path()
     if not is_interpreted[extension]:
+        click.secho(f"Compiling the source code with command:", fg="cyan")
+        click.secho(config_data["language"][extension]["command"] + "\n")
         exec_path, compile_returncode = compile_func[extension](
-            source_code_path, compilation_error_path)
+            source_code_path, compilation_error_path,
+            config_data["language"][extension]["command"])
         if compile_returncode != 0:
             click.secho(f"Compilation Error:\n", fg="red")
             print_file(compilation_error_path, True)
             sys.exit()
+        else:
+            click.secho(f"Compiled Successfully\n", fg="green")
+            if not is_file_empty(compilation_error_path):
+                click.secho(f"Compilation Warning:\n", fg="cyan")
+                print_file(compilation_error_path)
 
     for num in tc_list:
         in_path = task.tc_folder / f"in{num}.txt"
@@ -130,9 +138,9 @@ def judge(task, filename_without_extension, extension, base_folder):
 
         run_returncode = 0
         if is_interpreted[extension]:
-            run_returncode = run_func[extension](source_code_path, in_path,
-                                                 std_output_path,
-                                                 std_error_path)
+            run_returncode = run_func[extension](
+                source_code_path, in_path, std_output_path, std_error_path,
+                config_data["language"][extension]["command"])
         else:
             run_returncode = run_func[extension](exec_path, in_path,
                                                  std_output_path,
@@ -173,13 +181,13 @@ def judge(task, filename_without_extension, extension, base_folder):
                 print_file(std_error_path)
 
 
-def manage(filename, base_folder):
+def manage(filename, base_folder, config_data):
     file_path = base_folder / filename
-    extension = file_path.suffix
+    extension = file_path.suffix[1:]
     filename_without_extension = file_path.stem
-    if extension not in [".py", ".java", ".cpp"]:
+    if extension not in ["py", "java", "cpp"]:
         click.secho(
-            f"Language {file_path.suffix} is not supported (.py, .java, .cpp are only supported)",
+            f"Language {extension} is not supported (python(py), java, c++(cpp) are only supported)",
             err=True,
             fg="red")
         sys.exit(1)
@@ -206,4 +214,5 @@ def manage(filename, base_folder):
                 fg="red")
             sys.exit(1)
 
-        judge(task, filename_without_extension, extension, base_folder)
+        judge(task, filename_without_extension, extension, base_folder,
+              config_data)
