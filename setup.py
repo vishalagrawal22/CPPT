@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="cppt",
-    version='0.5.0',
+    version='1.0.0',
     py_modules=['cppt.bin.cppt'],
     include_package_data=True,
     install_requires=[
