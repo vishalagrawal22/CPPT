@@ -14,6 +14,7 @@ simply type the command `pip install cppt` to install the tool
 After the tool is installed type the command `cppt`
 
 you should see the following help text.
+
 ![help text cppt](https://i.imgur.com/bOASG2a.png)
 
 To fetch test case data from an online judge, you will need [competitive companion](https://github.com/jmerle/competitive-companion) browser extension.
