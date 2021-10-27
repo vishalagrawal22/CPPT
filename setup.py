@@ -22,7 +22,7 @@ setup(
     packages=[
         "cppt.utils", "cppt.commands.create", "cppt.commands.fetch",
         "cppt.commands.addtc", "cppt.commands.run", "cppt.commands.config",
-        "cppt.commands"
+        "cppt.commands.compile", "cppt.commands"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

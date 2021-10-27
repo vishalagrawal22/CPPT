@@ -95,6 +95,34 @@ def run(filename, base_folder, tc):
     run_manage(filename, base_folder, config_data, tc)
 
 
+@cli.command("compile", short_help="compile source code")
+@click.argument("filename", type=str)
+@click.option("-p",
+              "--path",
+              "base_folder",
+              default=None,
+              type=click.Path(exists=True,
+                              path_type=Path,
+                              writable=True,
+                              file_okay=False),
+              help="path to the folder which contains the souce code")
+def compile(filename, base_folder):
+    """
+    \b
+    Compile (if applied) the source code 
+    uses commands specified in the config file
+
+    \b
+    Args:
+    
+    \b
+    FILENAME of the file to run with file extension
+    """
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+    compile_manage(filename, base_folder, config_data)
+
+
 @cli.command("addtc", short_help="add a tc to be used in future runs of code")
 @click.argument("filename", type=str)
 @click.argument("input-path",

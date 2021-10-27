@@ -134,6 +134,24 @@ compile_func = {
 }
 
 
+def compile_source_code(source_code_path, compilation_error_path, extension, config_data):
+    click.secho(f"Compiling the source code with command:", fg="cyan")
+    click.secho(config_data["language"][extension]["command"] + "\n")
+    exec_path, compile_returncode = compile_func[extension](
+        source_code_path, compilation_error_path,
+        config_data["language"][extension]["command"])
+    if compile_returncode != 0:
+        click.secho(f"Compilation Error:\n", fg="red")
+        print_file(compilation_error_path, 2)
+        sys.exit()
+    else:
+        click.secho(f"Compiled Successfully\n", fg="green")
+        if not is_file_empty(compilation_error_path):
+            click.secho(f"Compilation Warning:\n", fg="cyan")
+            print_file(compilation_error_path, 1)
+    return exec_path
+
+
 def judge(task, filename_without_extension, extension, base_folder,
           config_data, tc):
     clear_folder(task.last_run_folder)
@@ -155,20 +173,7 @@ def judge(task, filename_without_extension, extension, base_folder,
 
     exec_path = Path()
     if not is_interpreted[extension]:
-        click.secho(f"Compiling the source code with command:", fg="cyan")
-        click.secho(config_data["language"][extension]["command"] + "\n")
-        exec_path, compile_returncode = compile_func[extension](
-            source_code_path, compilation_error_path,
-            config_data["language"][extension]["command"])
-        if compile_returncode != 0:
-            click.secho(f"Compilation Error:\n", fg="red")
-            print_file(compilation_error_path, 2)
-            sys.exit()
-        else:
-            click.secho(f"Compiled Successfully\n", fg="green")
-            if not is_file_empty(compilation_error_path):
-                click.secho(f"Compilation Warning:\n", fg="cyan")
-                print_file(compilation_error_path, 1)
+        exec_path = compile_source_code(source_code_path, compilation_error_path, extension, config_data)
     else:
         click.secho(f"Running the source code with command:", fg="cyan")
         click.secho(config_data["language"][extension]["command"] + "\n")
