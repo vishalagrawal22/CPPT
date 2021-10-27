@@ -48,5 +48,8 @@ def print_file(file_path, is_error=False):
 
     with open(file_path, 'r') as file:
         for line in file.readlines():
-            click.secho(line, fg="red", err=is_error, nl=False)
+            if is_error:
+                click.secho(line, fg="red", err=True, nl=False)
+            else:
+                click.secho(line, nl=False)
     click.echo("")
