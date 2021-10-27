@@ -9,9 +9,7 @@ from ...utils.file_manager import (is_file_empty, print_file, read_from_file,
                                    write_to_file, check_diff)
 from ...utils.folder_manager import Task, clear_folder
 
-
-def get_command(lang):
-    pass
+from ...utils.config_manager import get_config_path
 
 
 def cpp_compile(source_code_path, error_path, command):
@@ -19,17 +17,26 @@ def cpp_compile(source_code_path, error_path, command):
     exec_path = source_code_path.parent / file_name_without_extension
     command = command.split()
     command.extend([source_code_path, "-o", exec_path])
-    compilation_data = subprocess.run(command, capture_output=True, text=True)
-    write_to_file(error_path, compilation_data.stderr)
+    try:
+        compilation_data = subprocess.run(command, capture_output=True, text=True)
+    except OSError:
+        click.secho(f"Command not found: {' '.join(map(str, command))}", fg="red", err=True)
+        click.secho(f"Try changing the command in the config file (located at {get_config_path()})", fg="cyan")
+        sys.exit(1)
 
+    write_to_file(error_path, compilation_data.stderr)
     return [exec_path, compilation_data.returncode]
 
 
 def cpp_run(exec_path, input_path, output_path, error_path):
-    run_data = subprocess.run([exec_path.resolve()],
-                              input=read_from_file(input_path),
-                              capture_output=True,
-                              text=True)
+    try:
+        run_data = subprocess.run([exec_path.resolve()],
+                                input=read_from_file(input_path),
+                                capture_output=True,
+                                text=True)
+    except Exception as e:
+        click.secho(f"Unknown Error while running {exec_path.resolve()}", fg="red", err=True)
+        sys.exit(1)
     write_to_file(error_path, run_data.stderr)
     write_to_file(output_path, run_data.stdout)
     return run_data.returncode
@@ -40,18 +47,27 @@ def java_compile(source_code_path, error_path, command):
     exec_path = source_code_path.parent / file_name_without_extension
     command = command.split()
     command.extend([source_code_path])
-    compilation_data = subprocess.run(command, capture_output=True, text=True)
+    try:
+        compilation_data = subprocess.run(command, capture_output=True, text=True)
+    except OSError:
+        click.secho(f"Command not found: {' '.join(map(str, command))}", fg="red", err=True)
+        click.secho(f"Try changing the command in the config file (located at {get_config_path()})", fg="cyan")
+        sys.exit(1)
     write_to_file(error_path, compilation_data.stderr)
 
     return [exec_path, compilation_data.returncode]
 
 
 def java_run(exec_path, input_path, output_path, error_path):
-    run_data = subprocess.run(
-        ["java", exec_path],
-        input=read_from_file(input_path),
-        capture_output=True,
-        text=True)
+    try:
+        run_data = subprocess.run(
+            ["java", exec_path],
+            input=read_from_file(input_path),
+            capture_output=True,
+            text=True)
+    except Exception as e:
+        click.secho(f"Unknown Error while running {'java' + str(exec_path.resolve())}", fg="red", err=True)
+        sys.exit(1)
     write_to_file(error_path, run_data.stderr)
     write_to_file(output_path, run_data.stdout)
     return run_data.returncode
@@ -61,10 +77,18 @@ def java_run(exec_path, input_path, output_path, error_path):
 def py_run(source_code_path, input_path, output_path, error_path, command):
     command = command.split()
     command.extend([source_code_path])
-    run_data = subprocess.run(command,
-                              input=read_from_file(input_path),
-                              capture_output=True,
-                              text=True)
+    try:
+        run_data = subprocess.run(command,
+                                input=read_from_file(input_path),
+                                capture_output=True,
+                                text=True)
+    except OSError:
+        click.secho(f"Command not found: {' '.join(map(str, command))}", fg="red", err=True)
+        click.secho(f"Try changing the command in the config file (located at {get_config_path()})", fg="cyan")
+        sys.exit(1)
+    except Exception as e:
+        click.secho(f"Unknown Error while running {' '.join(map(str, command))}", fg="red", err=True)
+        sys.exit(1)
     write_to_file(error_path, run_data.stderr)
     write_to_file(output_path, run_data.stdout)
     return run_data.returncode
