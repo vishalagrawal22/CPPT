@@ -16,7 +16,7 @@ def get_command(lang):
 
 def cpp_compile(source_code_path, error_path, command):
     file_name_without_extension = source_code_path.stem
-    exec_path = error_path.parent / file_name_without_extension
+    exec_path = source_code_path.parent / file_name_without_extension
     command = command.split()
     command.extend([source_code_path, "-o", exec_path])
     compilation_data = subprocess.run(command, capture_output=True, text=True)
@@ -37,10 +37,9 @@ def cpp_run(exec_path, input_path, output_path, error_path):
 
 def java_compile(source_code_path, error_path, command):
     file_name_without_extension = source_code_path.stem
-    last_run_path = error_path.parent
-    exec_path = last_run_path / file_name_without_extension
+    exec_path = source_code_path.parent / file_name_without_extension
     command = command.split()
-    command.extend([source_code_path, "-d", last_run_path])
+    command.extend([source_code_path])
     compilation_data = subprocess.run(command, capture_output=True, text=True)
     write_to_file(error_path, compilation_data.stderr)
 
@@ -49,8 +48,7 @@ def java_compile(source_code_path, error_path, command):
 
 def java_run(exec_path, input_path, output_path, error_path):
     run_data = subprocess.run(
-        ["java", "-cp",
-         exec_path.parent.resolve(), exec_path.stem],
+        ["java", exec_path],
         input=read_from_file(input_path),
         capture_output=True,
         text=True)
@@ -128,7 +126,6 @@ def judge(task, filename_without_extension, extension, base_folder,
     for num in tc_list:
         in_path = task.tc_folder / f"in{num}.txt"
         ans_path = task.tc_folder / f"ans{num}.txt"
-        diff_path = task.last_run_folder / f"diff{num}.txt"
         std_output_path = task.last_run_folder / f"output{num}.txt"
         std_error_path = task.last_run_folder / f"error{num}.txt"
 
