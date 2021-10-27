@@ -114,13 +114,13 @@ def judge(task, filename_without_extension, extension, base_folder,
             config_data["language"][extension]["command"])
         if compile_returncode != 0:
             click.secho(f"Compilation Error:\n", fg="red")
-            print_file(compilation_error_path, True)
+            print_file(compilation_error_path, 2)
             sys.exit()
         else:
             click.secho(f"Compiled Successfully\n", fg="green")
             if not is_file_empty(compilation_error_path):
                 click.secho(f"Compilation Warning:\n", fg="cyan")
-                print_file(compilation_error_path)
+                print_file(compilation_error_path, 1)
     else:
         click.secho(f"Running the source code with command:", fg="cyan")
         click.secho(config_data["language"][extension]["command"] + "\n")
@@ -146,7 +146,7 @@ def judge(task, filename_without_extension, extension, base_folder,
 
         if run_returncode != 0:
             click.secho(f"Rumtime Error #{num}\n", fg="red")
-            print_file(std_error_path, True)
+            print_file(std_error_path, 2)
             continue
 
         if (check_diff(std_output_path, ans_path)):

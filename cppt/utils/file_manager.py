@@ -36,7 +36,12 @@ def read_from_file(file_path):
     return text
 
 
-def print_file(file_path, is_error=False):
+def print_file(file_path, is_error=0):
+    """
+        is_error = 0 -> normal text
+        is_error = 1 -> warning text
+        is_error = 2 -> error text
+    """
     if not file_path.exists():
         click.secho(f"File at {file_path.resolve()} does not exist",
                     fg="red",
@@ -48,8 +53,10 @@ def print_file(file_path, is_error=False):
 
     with open(file_path, 'r') as file:
         for line in file.readlines():
-            if is_error:
+            if is_error == 2:
                 click.secho(line, fg="red", err=True, nl=False)
-            else:
+            elif is_error == 1:
+                click.secho(line, fg="yellow", err=True, nl=False)
+            elif is_error == 0:
                 click.secho(line, nl=False)
     click.echo("")
