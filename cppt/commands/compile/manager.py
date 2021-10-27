@@ -1,8 +1,10 @@
-import click
 import sys
+
+import click
 
 from ...utils.folder_manager import Task
 from ..run.manager import compile_source_code, is_interpreted
+
 
 def manage(filename, base_folder, config_data):
     source_code_path = base_folder / filename

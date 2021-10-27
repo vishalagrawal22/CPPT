@@ -78,7 +78,8 @@ def fetch(base_folder, force):
                               file_okay=False),
               help="path to the folder which contains the souce code")
 @click.option("-t", "--tc", default=0, show_default=True, help="run specific testcase (0 for all)")
-def run(filename, base_folder, tc):
+@click.option("-i", "--interactive", is_flag=True, help="run program in interactive mode(stdin, stdout, stderr are used)")
+def run(filename, base_folder, tc, interactive):
     """
     \b
     Compile (if applied) and run source code on saved testcases
@@ -92,7 +93,7 @@ def run(filename, base_folder, tc):
     """
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
-    run_manage(filename, base_folder, config_data, tc)
+    run_manage(filename, base_folder, config_data, tc, interactive)
 
 
 @cli.command("compile", short_help="compile source code")

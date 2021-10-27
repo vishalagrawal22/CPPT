@@ -33,20 +33,24 @@ def cpp_compile(source_code_path, error_path, command):
     return [exec_path, compilation_data.returncode]
 
 
-def cpp_run(exec_path, input_path, output_path, error_path):
-    try:
-        run_data = subprocess.run([exec_path.resolve()],
-                                  input=read_from_file(input_path),
-                                  capture_output=True,
-                                  text=True)
-    except Exception as e:
-        click.secho(f"Unknown Error while running {exec_path.resolve()}",
-                    fg="red",
-                    err=True)
-        sys.exit(1)
-    write_to_file(error_path, run_data.stderr)
-    write_to_file(output_path, run_data.stdout)
-    return run_data.returncode
+def cpp_run(exec_path, input_path=None, output_path=None, error_path=None, interactive=False):
+    if not interactive:
+        try:
+            run_data = subprocess.run([exec_path.resolve()],
+                                    input=read_from_file(input_path),
+                                    capture_output=True,
+                                    text=True)
+        except Exception as e:
+            click.secho(f"Unknown Error while running {exec_path.resolve()}",
+                        fg="red",
+                        err=True)
+            sys.exit(1)
+        write_to_file(error_path, run_data.stderr)
+        write_to_file(output_path, run_data.stdout)
+        return run_data.returncode
+    else:
+        subprocess.run([exec_path.resolve()])
+    
 
 
 def java_compile(source_code_path, error_path, command):
@@ -71,49 +75,55 @@ def java_compile(source_code_path, error_path, command):
     return [exec_path, compilation_data.returncode]
 
 
-def java_run(exec_path, input_path, output_path, error_path):
-    try:
-        run_data = subprocess.run(["java", exec_path],
-                                  input=read_from_file(input_path),
-                                  capture_output=True,
-                                  text=True)
-    except Exception as e:
-        click.secho(
-            f"Unknown Error while running {'java' + str(exec_path.resolve())}",
-            fg="red",
-            err=True)
-        sys.exit(1)
-    write_to_file(error_path, run_data.stderr)
-    write_to_file(output_path, run_data.stdout)
-    return run_data.returncode
+def java_run(exec_path, input_path=None, output_path=None, error_path=None, interactive=False):
+    if not interactive:
+        try:
+            run_data = subprocess.run(["java", exec_path],
+                                    input=read_from_file(input_path),
+                                    capture_output=True,
+                                    text=True)
+        except Exception as e:
+            click.secho(
+                f"Unknown Error while running {'java' + str(exec_path.resolve())}",
+                fg="red",
+                err=True)
+            sys.exit(1)
+        write_to_file(error_path, run_data.stderr)
+        write_to_file(output_path, run_data.stdout)
+        return run_data.returncode
+    else:
+        subprocess.run(["java", exec_path])
 
 
 # exec path incase of interpreted language is source code path
-def py_run(source_code_path, input_path, output_path, error_path, command):
+def py_run(source_code_path, command, input_path=None, output_path=None, error_path=None, interactive=False):
     command = command.split()
     command.extend([source_code_path])
-    try:
-        run_data = subprocess.run(command,
-                                  input=read_from_file(input_path),
-                                  capture_output=True,
-                                  text=True)
-    except OSError:
-        click.secho(f"Command not found: {' '.join(map(str, command))}",
-                    fg="red",
-                    err=True)
-        click.secho(
-            f"Try changing the command in the config file (located at {get_config_path()})",
-            fg="cyan")
-        sys.exit(1)
-    except Exception as e:
-        click.secho(
-            f"Unknown Error while running {' '.join(map(str, command))}",
-            fg="red",
-            err=True)
-        sys.exit(1)
-    write_to_file(error_path, run_data.stderr)
-    write_to_file(output_path, run_data.stdout)
-    return run_data.returncode
+    if not interactive:
+        try:
+            run_data = subprocess.run(command,
+                                    input=read_from_file(input_path),
+                                    capture_output=True,
+                                    text=True)
+        except OSError:
+            click.secho(f"Command not found: {' '.join(map(str, command))}",
+                        fg="red",
+                        err=True)
+            click.secho(
+                f"Try changing the command in the config file (located at {get_config_path()})",
+                fg="cyan")
+            sys.exit(1)
+        except Exception as e:
+            click.secho(
+                f"Unknown Error while running {' '.join(map(str, command))}",
+                fg="red",
+                err=True)
+            sys.exit(1)
+        write_to_file(error_path, run_data.stderr)
+        write_to_file(output_path, run_data.stdout)
+        return run_data.returncode
+    else:
+        subprocess.run(command)
 
 
 is_interpreted = {
@@ -153,18 +163,8 @@ def compile_source_code(source_code_path, compilation_error_path, extension, con
 
 
 def judge(task, filename_without_extension, extension, base_folder,
-          config_data, tc):
+          config_data, tc, interactive):
     clear_folder(task.last_run_folder)
-
-    tc_list = []
-    if tc == 0: 
-        tc_list = task.get_tc_list()
-    else:
-        tc_list.append(tc)
-
-    if tc_list == []:
-        click.secho(f"No testcase to run!", fg="red")
-        sys.exit(1)
 
     source_code_path = (base_folder /
                         filename_without_extension).with_suffix("." +
@@ -178,65 +178,84 @@ def judge(task, filename_without_extension, extension, base_folder,
         click.secho(f"Running the source code with command:", fg="cyan")
         click.secho(config_data["language"][extension]["command"] + "\n")
 
-    for num in tc_list:
-        in_path = task.tc_folder / f"in{num}.txt"
-        ans_path = task.tc_folder / f"ans{num}.txt"
-        if not in_path.is_file() and not ans_path.is_file():
-            click.secho(f"Skipped #{num}\n", fg="yellow")
-            click.secho(f"Input file and Answer file both are not present\n", fg="red", err=True)
-            continue
-        elif not in_path.is_file():
-            click.secho(f"Skipped #{num}\n", fg="yellow")
-            click.secho(f"Input file is not present\n", fg="red", err=True)
-            continue
-        elif not ans_path.is_file():
-            click.secho(f"Skipped #{num}\n", fg="yellow")
-            click.secho(f"Answer file is not present\n", fg="red", err=True)
-            continue
-        std_output_path = task.last_run_folder / f"output{num}.txt"
-        std_error_path = task.last_run_folder / f"error{num}.txt"
+    if not interactive:
+        tc_list = []
+        if tc == 0: 
+            tc_list = task.get_tc_list()
+        else:
+            tc_list.append(tc)
 
-        click.secho(f"Running TC #{num}\n", fg="cyan")
+        if tc_list == []:
+            click.secho(f"No testcase to run!", fg="red")
+            sys.exit(1)
 
-        run_returncode = 0
+        for num in tc_list:
+            in_path = task.tc_folder / f"in{num}.txt"
+            ans_path = task.tc_folder / f"ans{num}.txt"
+            if not in_path.is_file() and not ans_path.is_file():
+                click.secho(f"Skipped #{num}\n", fg="yellow")
+                click.secho(f"Input file and Answer file both are not present\n", fg="red", err=True)
+                continue
+            elif not in_path.is_file():
+                click.secho(f"Skipped #{num}\n", fg="yellow")
+                click.secho(f"Input file is not present\n", fg="red", err=True)
+                continue
+            elif not ans_path.is_file():
+                click.secho(f"Skipped #{num}\n", fg="yellow")
+                click.secho(f"Answer file is not present\n", fg="red", err=True)
+                continue
+            std_output_path = task.last_run_folder / f"output{num}.txt"
+            std_error_path = task.last_run_folder / f"error{num}.txt"
+
+            click.secho(f"Running TC #{num}\n", fg="cyan")
+
+            run_returncode = 0
+            if is_interpreted[extension]:
+                run_returncode = run_func[extension](
+                    source_code_path, config_data["language"][extension]["command"],
+                    in_path, std_output_path, std_error_path,
+                    )
+            else:
+                run_returncode = run_func[extension](exec_path, in_path,
+                                                    std_output_path,
+                                                    std_error_path)
+
+            if run_returncode != 0:
+                click.secho(f"Rumtime Error #{num}\n", fg="red")
+                print_file(std_error_path, 2)
+                continue
+
+            if (check_diff(std_output_path, ans_path)):
+                click.secho(f"Accepted #{num}\n", fg="green")
+
+                if not is_file_empty(std_error_path):
+                    click.secho(f"Standard Error: ", fg="cyan")
+                    print_file(std_error_path)
+            else:
+                click.secho(f"Wrong Answer #{num}\n", fg="red")
+
+                click.secho(f"Test Case: ", fg="cyan")
+                print_file(in_path)
+
+                click.secho(f"Correct Answer: ", fg="cyan")
+                print_file(ans_path)
+
+                click.secho(f"Standard Output: ", fg="cyan")
+                print_file(std_output_path)
+
+                if not is_file_empty(std_error_path):
+                    click.secho(f"Standard Error: ", fg="cyan")
+                    print_file(std_error_path)
+    else:
+        click.secho("Enter the input:", fg="cyan")
         if is_interpreted[extension]:
-            run_returncode = run_func[extension](
-                source_code_path, in_path, std_output_path, std_error_path,
-                config_data["language"][extension]["command"])
+            run_func[extension](
+                source_code_path, config_data["language"][extension]["command"], interactive=True)
         else:
-            run_returncode = run_func[extension](exec_path, in_path,
-                                                 std_output_path,
-                                                 std_error_path)
-
-        if run_returncode != 0:
-            click.secho(f"Rumtime Error #{num}\n", fg="red")
-            print_file(std_error_path, 2)
-            continue
-
-        if (check_diff(std_output_path, ans_path)):
-            click.secho(f"Accepted #{num}\n", fg="green")
-
-            if not is_file_empty(std_error_path):
-                click.secho(f"Standard Error: ", fg="cyan")
-                print_file(std_error_path)
-        else:
-            click.secho(f"Wrong Answer #{num}\n", fg="red")
-
-            click.secho(f"Test Case: ", fg="cyan")
-            print_file(in_path)
-
-            click.secho(f"Correct Answer: ", fg="cyan")
-            print_file(ans_path)
-
-            click.secho(f"Standard Output: ", fg="cyan")
-            print_file(std_output_path)
-
-            if not is_file_empty(std_error_path):
-                click.secho(f"Standard Error: ", fg="cyan")
-                print_file(std_error_path)
+            run_func[extension](exec_path, interactive=True)   
 
 
-def manage(filename, base_folder, config_data, tc):
+def manage(filename, base_folder, config_data, tc, interactive):
     file_path = base_folder / filename
     extension = file_path.suffix[1:]
     filename_without_extension = file_path.stem
@@ -249,25 +268,11 @@ def manage(filename, base_folder, config_data, tc):
     else:
         task = Task(base_folder, filename_without_extension, extension)
         task_status = task.task_exists()
-        if task_status != 3:
-            if task_status == 0:
-                click.secho("Neither source code nor test data exists",
-                            err=True,
-                            fg="red")
-            elif task_status == 1:
-                click.secho("Test Data does not exist", err=True, fg="red")
-            elif task_status == 2:
-                click.secho("Source Code does not exist", err=True, fg="red")
-
-            click.secho(
-                "Try overwriting existing files with create or fetch commands's --force option",
-                err=True,
-                fg="red")
-            click.secho(
-                "Caution: do not forget to copy any code in source file before using --force option",
-                err=True,
-                fg="red")
+        if task_status not in [1, 3]:
+            click.secho("Source Code does not exist", err=True, fg="red")
             sys.exit(1)
-
-        judge(task, filename_without_extension, extension, base_folder,
-              config_data, tc)
+        else:
+            if task_status == 1:
+                task.create_task(create_source_code=False)
+            judge(task, filename_without_extension, extension, base_folder,
+                config_data, tc, interactive)
