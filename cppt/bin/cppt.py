@@ -5,8 +5,9 @@ import click
 from ..commands import *
 from ..utils.config_manager import get_config_data
 
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-@click.group()
+@click.group(context_settings=CONTEXT_SETTINGS)
 def cli():
     global config_data
     config_data = get_config_data()
@@ -24,7 +25,7 @@ def cli():
                     writable=True,
                     file_okay=False),
     help="path to the folder where you want to create the source code file")
-@click.option("--force", is_flag=True, help="overwrite existing files of task")
+@click.option("-f", "--force", is_flag=True, help="overwrite existing files of task")
 def create(filename, base_folder, force):
     """
     \b
@@ -52,7 +53,7 @@ def create(filename, base_folder, force):
                     writable=True,
                     file_okay=False),
     help="path to the folder where you want to create the source code file")
-@click.option("--force", is_flag=True, help="overwrite existing files of task")
+@click.option("-f", "--force", is_flag=True, help="overwrite existing files of task")
 def fetch(base_folder, force):
     """
     \b
@@ -76,7 +77,8 @@ def fetch(base_folder, force):
                               writable=True,
                               file_okay=False),
               help="path to the folder which contains the souce code")
-def run(filename, base_folder):
+@click.option("-t", "--tc", default=0, show_default=True, help="run specific testcase (0 for all)")
+def run(filename, base_folder, tc):
     """
     \b
     Compile (if applied) and run source code on saved testcases
@@ -90,7 +92,7 @@ def run(filename, base_folder):
     """
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
-    run_manage(filename, base_folder, config_data)
+    run_manage(filename, base_folder, config_data, tc)
 
 
 @cli.command("addtc", short_help="add a tc to be used in future runs of code")

@@ -173,13 +173,19 @@ class Task:
                 self.overwrite()
 
     def get_tc_list(self):
-        tc_list = []
+        tc_set = set()
         for tc in self.tc_folder.iterdir():
             tc = tc.name
-            if (tc.startswith("in")):
+            if tc.startswith("in"):
                 num = int(tc[2:][:-4])
-                ans_path = self.tc_folder / f"ans{num}.txt"
-                if ans_path.is_file():
-                    tc_list.append(num)
+                tc_set.add(num)
+            elif tc.startswith("ans"):
+                num = int(tc[3:][:-4])
+                tc_set.add(num)
+
+        tc_list = []
+        for tc in tc_set:
+            tc_list.append(tc)
+
         tc_list.sort()
         return tc_list

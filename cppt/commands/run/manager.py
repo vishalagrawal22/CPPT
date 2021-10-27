@@ -135,10 +135,14 @@ compile_func = {
 
 
 def judge(task, filename_without_extension, extension, base_folder,
-          config_data):
+          config_data, tc):
     clear_folder(task.last_run_folder)
 
-    tc_list = task.get_tc_list()
+    tc_list = []
+    if tc == 0: 
+        tc_list = task.get_tc_list()
+    else:
+        tc_list.append(tc)
 
     if tc_list == []:
         click.secho(f"No testcase to run!", fg="red")
@@ -172,6 +176,18 @@ def judge(task, filename_without_extension, extension, base_folder,
     for num in tc_list:
         in_path = task.tc_folder / f"in{num}.txt"
         ans_path = task.tc_folder / f"ans{num}.txt"
+        if not in_path.is_file() and not ans_path.is_file():
+            click.secho(f"Skipped #{num}\n", fg="yellow")
+            click.secho(f"Input file and Answer file both are not present\n", fg="red", err=True)
+            continue
+        elif not in_path.is_file():
+            click.secho(f"Skipped #{num}\n", fg="yellow")
+            click.secho(f"Input file is not present\n", fg="red", err=True)
+            continue
+        elif not ans_path.is_file():
+            click.secho(f"Skipped #{num}\n", fg="yellow")
+            click.secho(f"Answer file is not present\n", fg="red", err=True)
+            continue
         std_output_path = task.last_run_folder / f"output{num}.txt"
         std_error_path = task.last_run_folder / f"error{num}.txt"
 
@@ -215,7 +231,7 @@ def judge(task, filename_without_extension, extension, base_folder,
                 print_file(std_error_path)
 
 
-def manage(filename, base_folder, config_data):
+def manage(filename, base_folder, config_data, tc):
     file_path = base_folder / filename
     extension = file_path.suffix[1:]
     filename_without_extension = file_path.stem
@@ -249,4 +265,4 @@ def manage(filename, base_folder, config_data):
             sys.exit(1)
 
         judge(task, filename_without_extension, extension, base_folder,
-              config_data)
+              config_data, tc)
