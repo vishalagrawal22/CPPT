@@ -5,13 +5,13 @@ name = "pypi"
 
 [packages]
 click = "*"
-cppt = {editable = true, path = "."}
 pyyaml = "*"
 
 [dev-packages]
 isort = "*"
 yapf = "*"
 twine = "*"
+cppt = {editable = true, path = "."}
 
 [requires]
 python_version = "3.8"
