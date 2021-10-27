@@ -6,7 +6,7 @@ from pathlib import Path
 import click
 
 from ...utils.file_manager import (is_file_empty, print_file, read_from_file,
-                                   write_to_file)
+                                   write_to_file, check_diff)
 from ...utils.folder_manager import Task, clear_folder
 
 
@@ -149,14 +149,7 @@ def judge(task, filename_without_extension, extension, base_folder,
             print_file(std_error_path, True)
             continue
 
-        diff_command = ["diff", "-b", "-B", std_output_path, ans_path]
-        run_diff_data = subprocess.run(diff_command,
-                                       capture_output=True,
-                                       text=True)
-        with open(diff_path, "w") as file:
-            file.writelines(run_diff_data.stdout)
-
-        if (is_file_empty(diff_path)):
+        if (check_diff(std_output_path, ans_path)):
             click.secho(f"Accepted #{num}\n", fg="green")
 
             if not is_file_empty(std_error_path):

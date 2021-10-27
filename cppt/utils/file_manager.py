@@ -13,6 +13,17 @@ def is_file_empty(file_path):
     return False
 
 
+def check_diff(file_path1, file_path2):
+    file1_txt = (read_from_file(file_path1)).split()
+    file2_txt = (read_from_file(file_path2)).split()
+    if len(file1_txt) != len(file2_txt):
+        return False
+    for i in range(len(file1_txt)):
+        if file1_txt[i] != file2_txt[i]:
+            return False
+    return True
+
+
 def write_to_file(file_path, text):
     with open(file_path, "w") as file:
         file.write(text)
