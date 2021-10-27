@@ -3,6 +3,7 @@ from pathlib import Path
 
 import click
 
+from ...utils.file_manager import open_source_code_in_editor
 from ...utils.folder_manager import Task
 
 
@@ -24,3 +25,4 @@ def manage(filename, base_folder, force, config_data):
         click.secho(f"Successfully created task", fg="green")
         click.secho(f"Source code is located at {task.source_code.resolve()}",
                     fg="green")
+        open_source_code_in_editor(config_data, task.source_code)

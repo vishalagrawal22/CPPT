@@ -9,14 +9,14 @@ default_base_folder: .
 # default: cpp
 default_language: cpp
 
-# programming language related settings 
+# programming language related settings
 
 # command represents the command used to compile or run your source code
 
-# template represents 
+# template represents
 # absolute path to your boiler plate code for the particular language
 # the boiler plate code will be copied to the source code of that language
-# which were created by cppt
+# which were created by cppt (fetch aur create commands)
 # example: ~/cp/templates/template.cpp
 # default: empty file
 
@@ -34,3 +34,6 @@ language:
   py:
     command: python3
     template: null
+
+# command which you use to open your editor
+editor: null

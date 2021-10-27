@@ -1,8 +1,11 @@
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 import click
+
+from .config_manager import get_config_path
 
 
 # checks if file is empty (only contains white spaces)
@@ -60,3 +63,20 @@ def print_file(file_path, is_error=0):
             elif is_error == 0:
                 click.secho(line, nl=False)
     click.echo("")
+
+
+def open_source_code_in_editor(config_data, file_path):
+    if "editor" in config_data:
+        if config_data["editor"] is not None:
+            click.secho(
+                f"Opening {file_path.resolve()} with {config_data['editor']}",
+                fg="cyan")
+            try:
+                subprocess.run([config_data['editor'], file_path])
+            except OSError:
+                click.secho(f"Command not found: {config_data['editor']}",
+                            fg="red")
+                click.secho(
+                    f"Try changing the command in the config file (located at {get_config_path()})",
+                    fg="cyan")
+                sys.exit(1)
