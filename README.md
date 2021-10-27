@@ -24,11 +24,12 @@ To fetch test case data from an online judge, you will need [competitive compani
 2. Compile (if applied) and run source code against the aforementioned test cases.
 3. Add your test cases to run your code on.
 4. Create a source code file with your saved templates.
+5. Open the source code automatically in your favourite editor
 
 ## Developer Guide
 If you want to experiment with the project
 you need [pyenv](https://realpython.com/intro-to-pyenv/)  and [pipenv](https://realpython.com/pipenv-guide/)
 
 1. clone the repo
-2. cd into the created folder,
+2. cd into the created folder
 3. then use the command `pipenv install -e . --dev`
