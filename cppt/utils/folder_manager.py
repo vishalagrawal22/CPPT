@@ -42,7 +42,10 @@ class Task:
                         err=True)
             sys.exit(1)
 
-    def create_task(self, tests=None, template_path=None, create_source_code=True):
+    def create_task(self,
+                    tests=None,
+                    template_path=None,
+                    create_source_code=True):
         if not self.cppt_root_folder.exists():
             self.create_root()
 
@@ -50,7 +53,8 @@ class Task:
             try:
                 self.source_code.touch()
                 if template_path is not None:
-                    write_to_file(self.source_code, read_from_file(template_path))
+                    write_to_file(self.source_code,
+                                  read_from_file(template_path))
                 click.secho("Created source code file", fg="cyan")
             except Exception:
                 click.secho(f"Unable to create source code file",

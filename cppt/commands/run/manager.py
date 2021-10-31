@@ -33,13 +33,17 @@ def cpp_compile(source_code_path, error_path, command):
     return [exec_path, compilation_data.returncode]
 
 
-def cpp_run(exec_path, input_path=None, output_path=None, error_path=None, interactive=False):
+def cpp_run(exec_path,
+            input_path=None,
+            output_path=None,
+            error_path=None,
+            interactive=False):
     if not interactive:
         try:
             run_data = subprocess.run([exec_path.resolve()],
-                                    input=read_from_file(input_path),
-                                    capture_output=True,
-                                    text=True)
+                                      input=read_from_file(input_path),
+                                      capture_output=True,
+                                      text=True)
         except Exception as e:
             click.secho(f"Unknown Error while running {exec_path.resolve()}",
                         fg="red",
@@ -50,7 +54,6 @@ def cpp_run(exec_path, input_path=None, output_path=None, error_path=None, inter
         return run_data.returncode
     else:
         subprocess.run([exec_path.resolve()])
-    
 
 
 def java_compile(source_code_path, error_path, command):
@@ -75,13 +78,17 @@ def java_compile(source_code_path, error_path, command):
     return [exec_path, compilation_data.returncode]
 
 
-def java_run(exec_path, input_path=None, output_path=None, error_path=None, interactive=False):
+def java_run(exec_path,
+             input_path=None,
+             output_path=None,
+             error_path=None,
+             interactive=False):
     if not interactive:
         try:
             run_data = subprocess.run(["java", exec_path],
-                                    input=read_from_file(input_path),
-                                    capture_output=True,
-                                    text=True)
+                                      input=read_from_file(input_path),
+                                      capture_output=True,
+                                      text=True)
         except Exception as e:
             click.secho(
                 f"Unknown Error while running {'java' + str(exec_path.resolve())}",
@@ -96,15 +103,20 @@ def java_run(exec_path, input_path=None, output_path=None, error_path=None, inte
 
 
 # exec path incase of interpreted language is source code path
-def py_run(source_code_path, command, input_path=None, output_path=None, error_path=None, interactive=False):
+def py_run(source_code_path,
+           command,
+           input_path=None,
+           output_path=None,
+           error_path=None,
+           interactive=False):
     command = command.split()
     command.extend([source_code_path])
     if not interactive:
         try:
             run_data = subprocess.run(command,
-                                    input=read_from_file(input_path),
-                                    capture_output=True,
-                                    text=True)
+                                      input=read_from_file(input_path),
+                                      capture_output=True,
+                                      text=True)
         except OSError:
             click.secho(f"Command not found: {' '.join(map(str, command))}",
                         fg="red",
@@ -144,8 +156,15 @@ compile_func = {
 }
 
 
-def compile_source_code(source_code_path, compilation_error_path, extension, config_data):
-    click.secho(f"Compiling the source code with command:", fg="cyan")
+def compile_source_code(source_code_path,
+                        compilation_error_path,
+                        extension,
+                        config_data,
+                        gen_compile=False):
+    if not gen_compile:
+        click.secho(f"Compiling the source code with command:", fg="cyan")
+    else:
+        click.secho(f"Compiling the generator code with command:", fg="cyan")
     click.secho(config_data["language"][extension]["command"] + "\n")
     exec_path, compile_returncode = compile_func[extension](
         source_code_path, compilation_error_path,
@@ -173,14 +192,16 @@ def judge(task, filename_without_extension, extension, base_folder,
 
     exec_path = Path()
     if not is_interpreted[extension]:
-        exec_path = compile_source_code(source_code_path, compilation_error_path, extension, config_data)
+        exec_path = compile_source_code(source_code_path,
+                                        compilation_error_path, extension,
+                                        config_data)
     else:
         click.secho(f"Running the source code with command:", fg="cyan")
         click.secho(config_data["language"][extension]["command"] + "\n")
 
     if not interactive:
         tc_list = []
-        if tc == 0: 
+        if tc == 0:
             tc_list = task.get_tc_list()
         else:
             tc_list.append(tc)
@@ -194,7 +215,10 @@ def judge(task, filename_without_extension, extension, base_folder,
             ans_path = task.tc_folder / f"ans{num}.txt"
             if not in_path.is_file() and not ans_path.is_file():
                 click.secho(f"Skipped #{num}\n", fg="yellow")
-                click.secho(f"Input file and Answer file both are not present\n", fg="red", err=True)
+                click.secho(
+                    f"Input file and Answer file both are not present\n",
+                    fg="red",
+                    err=True)
                 continue
             elif not in_path.is_file():
                 click.secho(f"Skipped #{num}\n", fg="yellow")
@@ -202,7 +226,9 @@ def judge(task, filename_without_extension, extension, base_folder,
                 continue
             elif not ans_path.is_file():
                 click.secho(f"Skipped #{num}\n", fg="yellow")
-                click.secho(f"Answer file is not present\n", fg="red", err=True)
+                click.secho(f"Answer file is not present\n",
+                            fg="red",
+                            err=True)
                 continue
             std_output_path = task.last_run_folder / f"output{num}.txt"
             std_error_path = task.last_run_folder / f"error{num}.txt"
@@ -212,13 +238,16 @@ def judge(task, filename_without_extension, extension, base_folder,
             run_returncode = 0
             if is_interpreted[extension]:
                 run_returncode = run_func[extension](
-                    source_code_path, config_data["language"][extension]["command"],
-                    in_path, std_output_path, std_error_path,
-                    )
+                    source_code_path,
+                    config_data["language"][extension]["command"],
+                    in_path,
+                    std_output_path,
+                    std_error_path,
+                )
             else:
                 run_returncode = run_func[extension](exec_path, in_path,
-                                                    std_output_path,
-                                                    std_error_path)
+                                                     std_output_path,
+                                                     std_error_path)
 
             if run_returncode != 0:
                 click.secho(f"Rumtime Error #{num}\n", fg="red")
@@ -249,10 +278,11 @@ def judge(task, filename_without_extension, extension, base_folder,
     else:
         click.secho("Enter the input:", fg="cyan")
         if is_interpreted[extension]:
-            run_func[extension](
-                source_code_path, config_data["language"][extension]["command"], interactive=True)
+            run_func[extension](source_code_path,
+                                config_data["language"][extension]["command"],
+                                interactive=True)
         else:
-            run_func[extension](exec_path, interactive=True)   
+            run_func[extension](exec_path, interactive=True)
 
 
 def manage(filename, base_folder, config_data, tc, interactive):
@@ -275,4 +305,4 @@ def manage(filename, base_folder, config_data, tc, interactive):
             if task_status == 1:
                 task.create_task(create_source_code=False)
             judge(task, filename_without_extension, extension, base_folder,
-                config_data, tc, interactive)
+                  config_data, tc, interactive)

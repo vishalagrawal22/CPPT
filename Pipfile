@@ -12,6 +12,7 @@ isort = "*"
 yapf = "*"
 twine = "*"
 cppt = {editable = true, path = "."}
+toml = "*"
 
 [requires]
 python_version = "3.8"
