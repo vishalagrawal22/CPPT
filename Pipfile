@@ -6,13 +6,13 @@ name = "pypi"
 [packages]
 click = "*"
 pyyaml = "*"
+pylint = "*"
 
 [dev-packages]
-isort = "*"
-yapf = "*"
 twine = "*"
 cppt = {editable = true, path = "."}
 toml = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"

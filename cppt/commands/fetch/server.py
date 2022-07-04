@@ -3,25 +3,27 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import click
 
+task_data = None
 
-class postRequestHandler(BaseHTTPRequestHandler):
+
+class PostRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global task_data
-        data_length = int(self.headers['Content-Length'])
-        self.data = self.rfile.read(data_length)
+        data_length = int(self.headers["Content-Length"])
+        data = self.rfile.read(data_length)
         click.secho("Received problem data", fg="cyan")
-        task_data = json.loads(self.data)
+        task_data = json.loads(data)
 
 
 def run_server():
     PORT = 1327
-    server = HTTPServer(("localhost", PORT), postRequestHandler)
+    server = HTTPServer(("localhost", PORT), PostRequestHandler)
     click.secho(
         "Currently only problem parsing is supported (contest parsing is not supported)",
-        fg="cyan")
+        fg="cyan",
+    )
     click.secho(f"Listening on port {PORT}", fg="cyan")
-    click.secho("Waiting for competitive companion extension to send data\n",
-                fg="cyan")
+    click.secho("Waiting for competitive companion extension to send data\n", fg="cyan")
     server.handle_request()
 
 

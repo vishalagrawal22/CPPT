@@ -1,0 +1,5 @@
+[MAIN]
+recursive=yes
+
+[MESSAGES CONTROL]
+disable=R,C

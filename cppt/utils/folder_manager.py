@@ -1,9 +1,8 @@
 import sys
-from pathlib import Path
 
 import click
 
-from ..utils.file_manager import read_from_file, write_to_file
+from utils.file_manager import read_from_file, write_to_file
 
 
 def delete_folder(path):
@@ -36,16 +35,11 @@ class Task:
         try:
             self.cppt_root_folder.mkdir()
             click.secho("Created cppt root folder", fg="cyan")
-        except Exception:
-            click.secho(f"Unable to create cppt root folder",
-                        fg="red",
-                        err=True)
+        except:
+            click.secho("Unable to create cppt root folder", fg="red", err=True)
             sys.exit(1)
 
-    def create_task(self,
-                    tests=None,
-                    template_path=None,
-                    create_source_code=True):
+    def create_task(self, tests=None, template_path=None, create_source_code=True):
         if not self.cppt_root_folder.exists():
             self.create_root()
 
@@ -53,39 +47,34 @@ class Task:
             try:
                 self.source_code.touch()
                 if template_path is not None:
-                    write_to_file(self.source_code,
-                                  read_from_file(template_path))
+                    write_to_file(self.source_code, read_from_file(template_path))
                 click.secho("Created source code file", fg="cyan")
-            except Exception:
-                click.secho(f"Unable to create source code file",
-                            fg="red",
-                            err=True)
+            except:
+                click.secho("Unable to create source code file", fg="red", err=True)
                 sys.exit(1)
 
         try:
             self.task_folder.mkdir()
             click.secho("Created task folder", fg="cyan")
-        except Exception:
-            click.secho(f"Unable to create task folder", fg="red", err=True)
+        except:
+            click.secho("Unable to create task folder", fg="red", err=True)
             sys.exit(1)
 
         try:
             self.tc_folder.mkdir()
             click.secho("Created tc folder", fg="cyan")
-        except Exception:
-            click.secho(f"Unable to create tc folder", fg="red", err=True)
+        except:
+            click.secho("Unable to create tc folder", fg="red", err=True)
             sys.exit(1)
 
         try:
             self.last_run_folder.mkdir()
             click.secho("Created last run folder", fg="cyan")
-        except Exception:
-            click.secho(f"Unable to create last run folder",
-                        fg="red",
-                        err=True)
+        except:
+            click.secho("Unable to create last run folder", fg="red", err=True)
             sys.exit(1)
 
-        if (tests is not None):
+        if tests is not None:
             self.add_tests(tests)
             click.secho("Added Testcases", fg="cyan")
 
@@ -97,14 +86,16 @@ class Task:
                 for testcase_element in individual_testcase:
                     prefix = "in" if is_input_file else "ans"
                     with open(
-                            self.tc_folder / f"{prefix}{testcase_number}.txt",
-                            "w") as file:
+                        self.tc_folder / f"{prefix}{testcase_number}.txt",
+                        "w",
+                        encoding="utf-8",
+                    ) as file:
                         file.writelines(individual_testcase[testcase_element])
                     is_input_file = is_input_file ^ 1
 
                 testcase_number += 1
         except:
-            click.secho(f"Unable to add testcases", fg="red", err=True)
+            click.secho("Unable to add testcases", fg="red", err=True)
             sys.exit(1)
 
     def task_exists(self):
@@ -136,7 +127,8 @@ class Task:
                 click.secho(
                     f"Unable to delete task folder at {self.task_folder.resolve()}",
                     fg="red",
-                    err=True)
+                    err=True,
+                )
                 sys.exit(1)
 
         if self.source_code.exists():
@@ -147,7 +139,8 @@ class Task:
                 click.secho(
                     f"Unable to delete source code at {self.source_code.resolve()}",
                     fg="red",
-                    err=True)
+                    err=True,
+                )
                 sys.exit(1)
 
     def safe_overwrite(self, force):
@@ -158,22 +151,26 @@ class Task:
                     click.secho(
                         f"Source code already exists at {self.source_code.resolve()}",
                         err=True,
-                        fg="red")
+                        fg="red",
+                    )
                 elif task_status == 2:
                     click.secho(
                         f"Task folder already exists at {self.task_folder.resolve()}",
                         err=True,
-                        fg="red")
+                        fg="red",
+                    )
                 else:
                     click.secho(
                         f"Both source code and task folder already exists at {self.source_code.resolve()} and {self.task_folder.resolve()} respectively",
                         err=True,
-                        fg="red")
+                        fg="red",
+                    )
 
                 click.secho(
                     "To overwrite existing files specify --force option",
                     err=True,
-                    fg="red")
+                    fg="red",
+                )
                 sys.exit(1)
             else:
                 self.overwrite()

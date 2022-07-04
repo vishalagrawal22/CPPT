@@ -1,20 +1,28 @@
-import subprocess
-import click
 import sys
 from pathlib import Path
 
-from ...utils.file_manager import (check_diff, is_file_empty, print_file)
-from ...utils.folder_manager import Task, delete_folder, clear_folder
-from ..run.manager import is_interpreted, run_func, compile_source_code
+import click
+
+from utils.file_manager import is_file_empty, print_file
+from utils.folder_manager import Task, clear_folder
+from commands.run.manager import compile_source_code, is_interpreted, run_func
 
 
-def judge(task, base_folder, filename_without_extension, extension, gen_path,
-          gen_extension, number_of_runs, config_data):
+def judge(
+    task,
+    base_folder,
+    filename_without_extension,
+    extension,
+    gen_path,
+    gen_extension,
+    number_of_runs,
+    config_data,
+):
     clear_folder(task.last_run_folder)
 
-    source_code_path = (base_folder /
-                        filename_without_extension).with_suffix("." +
-                                                                extension)
+    source_code_path = (base_folder / filename_without_extension).with_suffix(
+        "." + extension
+    )
     gen_folder = task.last_run_folder / "gen"
     gen_folder.mkdir()
 
@@ -23,20 +31,20 @@ def judge(task, base_folder, filename_without_extension, extension, gen_path,
 
     exec_path = Path()
     if not is_interpreted[extension]:
-        exec_path = compile_source_code(source_code_path,
-                                        compilation_error_path, extension,
-                                        config_data)
+        exec_path = compile_source_code(
+            source_code_path, compilation_error_path, extension, config_data
+        )
     else:
-        click.secho(f"Running the source code with command:", fg="cyan")
+        click.secho("Running the source code with command:", fg="cyan")
         click.secho(config_data["language"][extension]["command"] + "\n")
 
     gen_exec_path = Path()
     if not is_interpreted[gen_extension]:
-        gen_exec_path = compile_source_code(gen_path,
-                                            gen_compilation_error_path,
-                                            gen_extension, config_data, True)
+        gen_exec_path = compile_source_code(
+            gen_path, gen_compilation_error_path, gen_extension, config_data, True
+        )
     else:
-        click.secho(f"Running the generator code with command:", fg="cyan")
+        click.secho("Running the generator code with command:", fg="cyan")
         click.secho(config_data["language"][gen_extension]["command"] + "\n")
 
     for current_run in range(number_of_runs):
@@ -58,18 +66,17 @@ def judge(task, base_folder, filename_without_extension, extension, gen_path,
                 gen_std_error_path,
             )
         else:
-            gen_run_returncode = run_func[gen_extension](gen_exec_path,
-                                                         gen_in_path,
-                                                         gen_std_output_path,
-                                                         gen_std_error_path)
+            gen_run_returncode = run_func[gen_extension](
+                gen_exec_path, gen_in_path, gen_std_output_path, gen_std_error_path
+            )
 
         if gen_run_returncode != 0:
-            click.secho(f"Rumtime Error while generating testcase", fg="red")
+            click.secho("Rumtime Error while generating testcase", fg="red")
             print_file(gen_std_error_path, 2)
             sys.exit(1)
 
-        std_output_path = gen_folder / f"output.txt"
-        std_error_path = gen_folder / f"error.txt"
+        std_output_path = gen_folder / "output.txt"
+        std_error_path = gen_folder / "error.txt"
 
         run_returncode = 0
         if is_interpreted[extension]:
@@ -81,35 +88,34 @@ def judge(task, base_folder, filename_without_extension, extension, gen_path,
                 std_error_path,
             )
         else:
-            run_returncode = run_func[extension](exec_path,
-                                                 gen_std_output_path,
-                                                 std_output_path,
-                                                 std_error_path)
+            run_returncode = run_func[extension](
+                exec_path, gen_std_output_path, std_output_path, std_error_path
+            )
 
         if run_returncode != 0:
-            click.secho(f"Rumtime Error while running source code\n", fg="red")
+            click.secho("Rumtime Error while running source code\n", fg="red")
             print_file(std_error_path, 2)
-            click.secho(f"Testcase: ", fg="cyan")
+            click.secho("Testcase: ", fg="cyan")
             print_file(gen_std_output_path)
             sys.exit(0)
 
-        if (is_file_empty(std_output_path)):
+        if is_file_empty(std_output_path):
             click.secho(f"Accepted #{current_run + 1}\n", fg="green")
 
             if not is_file_empty(std_error_path):
-                click.secho(f"Standard Error: ", fg="cyan")
+                click.secho("Standard Error: ", fg="cyan")
                 print_file(std_error_path)
         else:
             click.secho(f"Wrong Answer #{current_run + 1}\n", fg="red")
 
-            click.secho(f"Test Case: ", fg="cyan")
+            click.secho("Test Case: ", fg="cyan")
             print_file(gen_std_output_path)
 
-            click.secho(f"Standard Output: ", fg="cyan")
+            click.secho("Standard Output: ", fg="cyan")
             print_file(std_output_path)
 
             if not is_file_empty(std_error_path):
-                click.secho(f"Standard Error: ", fg="cyan")
+                click.secho("Standard Error: ", fg="cyan")
                 print_file(std_error_path)
             sys.exit(1)
 
@@ -123,12 +129,16 @@ def manage(filename, number_of_runs, gen_path, base_folder, config_data):
     gen_extension = gen_path.suffix[1:]
 
     filename_without_extension = file_path.stem
-    if extension not in ["py", "java", "cpp"
-                         ] or gen_extension not in ["py", "java", "cpp"]:
+    if extension not in ["py", "java", "cpp"] or gen_extension not in [
+        "py",
+        "java",
+        "cpp",
+    ]:
         click.secho(
             f"Language {extension} is not supported (python(py), java, c++(cpp) are only supported)",
             err=True,
-            fg="red")
+            fg="red",
+        )
         sys.exit(1)
     else:
         task = Task(base_folder, filename_without_extension, extension)
@@ -139,5 +149,13 @@ def manage(filename, number_of_runs, gen_path, base_folder, config_data):
         else:
             if task_status == 1:
                 task.create_task(create_source_code=False)
-            judge(task, base_folder, filename_without_extension, extension,
-                  gen_path, gen_extension, number_of_runs, config_data)
+            judge(
+                task,
+                base_folder,
+                filename_without_extension,
+                extension,
+                gen_path,
+                gen_extension,
+                number_of_runs,
+                config_data,
+            )
