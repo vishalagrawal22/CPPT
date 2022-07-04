@@ -98,7 +98,7 @@ def run(filename, base_folder, tc, interactive):
     """
     \b
     Compile (if applied) and run source code on saved testcases
-    uses commands specified in the config file
+    using commands specified in the config file
 
     \b
     Args:
@@ -126,7 +126,7 @@ def compile(filename, base_folder):
     """
     \b
     Compile (if applied) the source code 
-    uses commands specified in the config file
+    using commands specified in the config file
 
     \b
     Args:
@@ -180,7 +180,7 @@ def addtc(filename, input_path, output_path, base_folder):
                 type=click.Path(exists=True, path_type=Path, dir_okay=False))
 @click.option("-n",
               "--number-of-runs",
-              default=100000,
+              default=10000,
               show_default=True,
               help="no of randomly generated testcases")
 @click.option("-p",
@@ -195,6 +195,19 @@ def addtc(filename, input_path, output_path, base_folder):
               ),
               help="path to the folder which contains the souce code")
 def test(filename, number_of_runs, testcase_generator_path, base_folder):
+    """
+    \b
+    Generate random testcases and run your code against them.
+    Create a function in your source code which validates 
+    your answer if the validation fails print your answer to
+    std output.
+    \b
+    Args:
+    
+    \b
+    FILENAME of the source code file with file extension 
+    TESTCASE_GENERATOR_PATH: path of test case generator file
+    """
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
     test_manage(filename, number_of_runs, testcase_generator_path, base_folder,
