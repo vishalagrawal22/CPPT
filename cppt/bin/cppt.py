@@ -102,7 +102,7 @@ def run(filename, base_folder, tc, interactive):
 
     \b
     Args:
-    
+
     \b
     FILENAME of the file to run with file extension
     """
@@ -130,7 +130,7 @@ def compile(filename, base_folder):
 
     \b
     Args:
-    
+
     \b
     FILENAME of the file to run with file extension
     """
@@ -163,7 +163,7 @@ def addtc(filename, input_path, output_path, base_folder):
 
     \b
     Args:
-    
+
     \b
     FILENAME of the source code file with file extension 
     INPUT_PATH: path of file containing input of the testcase
@@ -180,7 +180,7 @@ def addtc(filename, input_path, output_path, base_folder):
                 type=click.Path(exists=True, path_type=Path, dir_okay=False))
 @click.option("-n",
               "--number-of-runs",
-              default=100000,
+              default=10000,
               show_default=True,
               help="no of randomly generated testcases")
 @click.option("-p",
@@ -195,6 +195,16 @@ def addtc(filename, input_path, output_path, base_folder):
               ),
               help="path to the folder which contains the souce code")
 def test(filename, number_of_runs, testcase_generator_path, base_folder):
+    """
+    \b
+    Run code against randomly generated testcases
+    \b
+    Args:
+
+    \b
+    FILENAME of the file to run with file extension
+    Testcase_Generator_Path: path of the file used to generate random testcases
+    """
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
     test_manage(filename, number_of_runs, testcase_generator_path, base_folder,
