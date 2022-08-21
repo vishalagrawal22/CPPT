@@ -1,0 +1,13 @@
+{
+  "position": 3,
+  "label": "Usage",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Usage"
+  },
+  "customProps": {
+    "description": "CPPT commands to optimize your competitive programming workflow."
+  }
+}
