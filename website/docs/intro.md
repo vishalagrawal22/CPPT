@@ -3,8 +3,6 @@ title: Introduction
 sidebar_position: 1
 ---
 
-# Introduction
-
 CPPT is a cross platform command line tool to automate your competitive programming workflow without cluttering your workspace with test case data.
 
 ## Problem

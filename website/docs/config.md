@@ -3,8 +3,6 @@ title: Configuration
 sidebar_position: 2
 ---
 
-# Configuration
-
 CPPT utilizes the YAML language for the config file instead of the typical JSON format because YAML is more readable and allows adding comments in the config file to improve your experience when dealing with them.
 
 ## Location
