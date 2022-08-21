@@ -1,3 +1,33 @@
+---
+title: Configuration
+sidebar_position: 2
+---
+
+# Configuration
+
+CPPT utilizes the YAML language for the config file instead of the typical JSON format because YAML is more readable and allows adding comments in the config file to improve your experience when dealing with them.
+
+## Location
+
+The config file should be located at `~/.config/cppt/config.yaml`.
+
+## Create default config file
+
+The config file gets automatically created whenever you run a command. If you want to manually create a config file, type the following command.
+
+```shell
+$ cppt config
+```
+
+If you want to override the current config file with default values use the following command.
+
+```shell
+$ cppt config --reset
+```
+
+## Default config file
+
+```yaml
 # absolute or relative path to the folder
 # where you want the source code (folder should already exist)
 # example: ~/cp/practice (saves code to $HOME/cp/practice)
@@ -38,3 +68,4 @@ language:
 # command which you use to open your editor
 # example: code or subl
 editor: null
+```
