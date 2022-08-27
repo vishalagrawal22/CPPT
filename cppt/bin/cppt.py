@@ -1,8 +1,19 @@
+from email.policy import default
 from pathlib import Path
 
 import click
 
-from ..commands import *
+from ..commands import (
+    addtc_manage,
+    compile_manage,
+    config_manage,
+    create_manage,
+    fetch_manage,
+    run_manage,
+    test_manage,
+    view_tc_manage,
+)
+
 from ..utils.config_manager import get_config_data
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
@@ -74,7 +85,12 @@ def fetch(base_folder, force):
     help="path to the folder which contains the souce code",
 )
 @click.option(
-    "-t", "--tc", default=0, show_default=True, help="run specific testcase (0 for all)"
+    "-t",
+    "--tc",
+    "tc_no",
+    default=0,
+    show_default=True,
+    help="run specific testcase (0 for all)",
 )
 @click.option(
     "-i",
@@ -82,7 +98,7 @@ def fetch(base_folder, force):
     is_flag=True,
     help="run program in interactive mode(stdin, stdout, stderr are used)",
 )
-def run(filename, base_folder, tc, interactive):
+def run(filename, base_folder, tc_no, interactive):
     """
     \b
     Compile (if applied) and run source code on saved testcases
@@ -96,7 +112,7 @@ def run(filename, base_folder, tc, interactive):
     """
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
-    run_manage(filename, base_folder, config_data, tc, interactive)
+    run_manage(filename, base_folder, config_data, tc_no, interactive)
 
 
 @cli.command("compile", short_help="compile source code")
@@ -163,6 +179,63 @@ def addtc(filename, input_path, output_path, base_folder):
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
     addtc_manage(filename, input_path, output_path, base_folder)
+
+
+@cli.group(short_help="commands related to testcase data")
+def tc():
+    pass
+
+
+def get_cleaned_tcs(tcs):
+    cleaned_tcs = []
+
+    has_zero = len(tcs) == 0
+    for currentTc in tcs:
+        if int(currentTc) == 0:
+            has_zero = True
+        else:
+            cleaned_tcs.append(int(currentTc))
+
+    if has_zero:
+        cleaned_tcs = [0]
+
+    cleaned_tcs = list(set(cleaned_tcs))
+    cleaned_tcs.sort()
+    return cleaned_tcs
+
+
+@tc.command(short_help="view testcases")
+@click.argument("filename", type=str)
+@click.option(
+    "-p",
+    "--path",
+    "base_folder",
+    default=None,
+    type=click.Path(
+        exists=True,
+        path_type=Path,
+        writable=True,
+        file_okay=False,
+    ),
+    help="path to the folder which contains the souce code",
+)
+@click.argument("tcs", nargs=-1)
+def view(filename, base_folder, tcs):
+    """
+    \b
+    View a set of testcases related to FILENAME
+
+    \b
+    Args:
+
+    \b
+    FILENAME of the source code file with file extension
+    TCS: space seperated list of test case numbers (0 for all)
+    """
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+
+    view_tc_manage(filename, base_folder, get_cleaned_tcs(tcs))
 
 
 @cli.command("test", short_help="brute force testing")

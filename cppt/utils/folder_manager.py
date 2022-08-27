@@ -180,3 +180,65 @@ class Task:
 
         tc_list.sort()
         return tc_list
+
+    def get_tc(self, tc_no):
+        tc_list = self.get_tc_list()
+
+        if tc_no not in tc_list:
+            return None
+
+        return {
+            "input": read_from_file(self.tc_folder / f"in{tc_no}.txt"),
+            "output": read_from_file(self.tc_folder / f"ans{tc_no}.txt"),
+        }
+
+    def get_tcs(self, tc_nos):
+        tc_data = []
+        for tc_no in tc_nos:
+            tc_data.append(self.get_tc(tc_no))
+        return tc_data
+
+
+def exit_if_invalid_extension(extension):
+    if extension not in ["py", "java", "cpp"]:
+        click.secho(
+            f"Language {extension} is not supported (python(py), java, c++(cpp) are only supported)",
+            err=True,
+            fg="red",
+        )
+        sys.exit(1)
+
+
+def exit_if_invalid_task(task):
+    task_status = task.task_exists()
+    if task_status != 3:
+        if task_status == 0:
+            click.secho(
+                f"Neither source code nor task folder exists at {task.source_code.resolve()} and {task.task_folder.resolve()} respectively",
+                err=True,
+                fg="red",
+            )
+        elif task_status == 1:
+            click.secho(
+                f"Task folder does not exist at {task.task_folder.resolve()}",
+                err=True,
+                fg="red",
+            )
+        elif task_status == 2:
+            click.secho(
+                f"Source code does not exist at {task.source_code.resolve()}",
+                err=True,
+                fg="red",
+            )
+
+        click.secho(
+            "Try overwriting existing files with create or fetch commands's --force option",
+            err=True,
+            fg="red",
+        )
+        click.secho(
+            "Caution: do not forget to copy any code in source file before using --force option",
+            err=True,
+            fg="red",
+        )
+        sys.exit(1)
