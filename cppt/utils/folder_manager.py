@@ -69,21 +69,37 @@ class Task:
     def add_tests(self, tests, tc_number=1):
         try:
             testcase_number = tc_number
-            for individual_testcase in tests:
-                is_input_file = 1
-                for testcase_element in individual_testcase:
-                    prefix = "in" if is_input_file else "ans"
-                    with open(
-                        self.tc_folder / f"{prefix}{testcase_number}.txt",
-                        "w",
-                        encoding="utf-8",
-                    ) as file:
-                        file.writelines(individual_testcase[testcase_element])
-                    is_input_file = is_input_file ^ 1
-
+            for test in tests:
+                self.add_test(test, testcase_number)
                 testcase_number += 1
+
         except Exception:
             click.secho("Unable to add testcases", fg="red", err=True)
+            sys.exit(1)
+
+    def add_test(self, test, tc_number=None):
+        try:
+            if tc_number is None:
+                tc_list = self.get_tc_list()
+                tc_number = 1
+                if len(tc_list) != 0:
+                    tc_number = tc_list[-1] + 1
+
+            with open(
+                self.tc_folder / f"in{tc_number}.txt",
+                "w",
+                encoding="utf-8",
+            ) as file:
+                file.writelines(test["input"])
+
+            with open(
+                self.tc_folder / f"ans{tc_number}.txt",
+                "w",
+                encoding="utf-8",
+            ) as file:
+                file.writelines(test["output"])
+        except Exception:
+            click.secho(f"Unable to add testcase #{tc_number}", fg="red", err=True)
             sys.exit(1)
 
     def task_exists(self):

@@ -16,7 +16,7 @@ default_language: cpp
 # template represents
 # absolute path to your boiler plate code for the particular language
 # the boiler plate code will be copied to the source code of that language
-# which were created by cppt (fetch aur create commands)
+# which were created by cppt (fetch or create commands)
 # example: ~/cp/templates/template.cpp
 # default: empty file
 
@@ -36,4 +36,11 @@ language:
     template: null
 
 # command which you use to open your editor
+# for vscode: code
+# for sublime: subl
 editor: null
+
+# command to open editor for multiline input
+# for vscode: code --wait
+# for sublime: subl --wait
+multiline_input_command: null

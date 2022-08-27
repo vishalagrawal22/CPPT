@@ -1,7 +1,7 @@
-from email.policy import default
 from pathlib import Path
 
 import click
+import sys
 
 from ..commands import (
     addtc_manage,
@@ -12,6 +12,7 @@ from ..commands import (
     run_manage,
     test_manage,
     view_tc_manage,
+    add_tc_manage,
 )
 
 from ..utils.config_manager import get_config_data
@@ -236,6 +237,68 @@ def view(filename, base_folder, tcs):
         base_folder = Path(config_data["default_base_folder"])
 
     view_tc_manage(filename, base_folder, get_cleaned_tcs(tcs))
+
+
+@tc.command(short_help="add testcase")
+@click.argument("filename", type=str)
+@click.option(
+    "-p",
+    "--path",
+    "base_folder",
+    default=None,
+    type=click.Path(
+        exists=True,
+        path_type=Path,
+        writable=True,
+        file_okay=False,
+    ),
+    help="path to the folder which contains the souce code",
+)
+def add(filename, base_folder):
+    """
+    \b
+    Add a testcase to FILENAME
+
+    \b
+    Args:
+
+    \b
+    FILENAME of the source code file with file extension
+    """
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+
+    try:
+        editor = None
+        if "multiline_input_command" in config_data:
+            editor = config_data["multiline_input_command"]
+
+        testcase = {}
+        testcase["input"] = click.edit(
+            "Enter the input and save the file (delete the help text before saving).\nYou can set the input editor in config file (the default editor is vim, use :q to exit if you opened it by mistake)",
+            editor=editor,
+        )
+        if testcase["input"] is None:
+            click.secho("Input file closed without saving\n", fg="red", err=True)
+            sys.exit(1)
+
+        testcase["output"] = click.edit(
+            "Enter the output and save the file (delete the help text before saving).\nYou can set the input editor in config file (the default editor is vim, use :q to exit if you opened it by mistake)",
+            editor=editor,
+        )
+        if testcase["output"] is None:
+            click.secho("Output file closed without saving\n", fg="red", err=True)
+            sys.exit(1)
+
+        add_tc_manage(filename, base_folder, testcase)
+
+    except click.UsageError:
+        click.secho(
+            "Unable to open editor for testcase input (check config file for potential errors).\n",
+            fg="red",
+            err=True,
+        )
+        sys.exit(1)
 
 
 @cli.command("test", short_help="brute force testing")
