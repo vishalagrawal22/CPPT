@@ -8,11 +8,13 @@ click = "*"
 pyyaml = "*"
 
 [dev-packages]
-isort = "*"
-yapf = "*"
+black = "*"
 twine = "*"
 cppt = {editable = true, path = "."}
 toml = "*"
+
+[scripts]
+format = "black ."
 
 [requires]
 python_version = "3.8"

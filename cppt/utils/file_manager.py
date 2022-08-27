@@ -10,8 +10,8 @@ from .config_manager import get_config_path
 
 # checks if file is empty (only contains white spaces)
 def is_file_empty(file_path):
-    content = open(file_path, 'r').read()
-    if re.search(r'^\s*$', content):
+    content = open(file_path, "r").read()
+    if re.search(r"^\s*$", content):
         return True
     return False
 
@@ -41,20 +41,18 @@ def read_from_file(file_path):
 
 def print_file(file_path, is_error=0):
     """
-        is_error = 0 -> normal text
-        is_error = 1 -> warning text
-        is_error = 2 -> error text
+    is_error = 0 -> normal text
+    is_error = 1 -> warning text
+    is_error = 2 -> error text
     """
     if not file_path.exists():
-        click.secho(f"File at {file_path.resolve()} does not exist",
-                    fg="red",
-                    err=True)
+        click.secho(f"File at {file_path.resolve()} does not exist", fg="red", err=True)
         sys.exit(1)
     elif not file_path.is_file():
         click.secho(f"{file_path.resolve()} is not a file", fg="red", err=True)
         sys.exit(1)
 
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         for line in file.readlines():
             if is_error == 2:
                 click.secho(line, fg="red", err=True, nl=False)
@@ -69,14 +67,14 @@ def open_source_code_in_editor(config_data, file_path):
     if "editor" in config_data:
         if config_data["editor"] is not None:
             click.secho(
-                f"Opening {file_path.resolve()} with {config_data['editor']}",
-                fg="cyan")
+                f"Opening {file_path.resolve()} with {config_data['editor']}", fg="cyan"
+            )
             try:
-                subprocess.run([config_data['editor'], file_path])
+                subprocess.run([config_data["editor"], file_path])
             except OSError:
-                click.secho(f"Command not found: {config_data['editor']}",
-                            fg="red")
+                click.secho(f"Command not found: {config_data['editor']}", fg="red")
                 click.secho(
                     f"Try changing the command in the config file (located at {get_config_path()})",
-                    fg="cyan")
+                    fg="cyan",
+                )
                 sys.exit(1)

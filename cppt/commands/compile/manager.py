@@ -14,12 +14,13 @@ def manage(filename, base_folder, config_data):
         click.secho(
             f"Language {extension} is not supported (python(py), java, c++(cpp) are only supported)",
             err=True,
-            fg="red")
+            fg="red",
+        )
         sys.exit(1)
     elif is_interpreted[extension]:
-        click.secho(f"Language {extension} does not support compilation",
-                    err=True,
-                    fg="red")
+        click.secho(
+            f"Language {extension} does not support compilation", err=True, fg="red"
+        )
         sys.exit(1)
     else:
         task = Task(base_folder, filename_without_extension, extension)
@@ -31,5 +32,6 @@ def manage(filename, base_folder, config_data):
             if task_status == 1:
                 task.create_task(create_source_code=False)
             compilation_error_path = task.last_run_folder / "compilation_error.txt"
-            compile_source_code(source_code_path, compilation_error_path,
-                                extension, config_data)
+            compile_source_code(
+                source_code_path, compilation_error_path, extension, config_data
+            )

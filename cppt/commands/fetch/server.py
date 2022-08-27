@@ -7,7 +7,7 @@ import click
 class postRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global task_data
-        data_length = int(self.headers['Content-Length'])
+        data_length = int(self.headers["Content-Length"])
         self.data = self.rfile.read(data_length)
         click.secho("Received problem data", fg="cyan")
         task_data = json.loads(self.data)
@@ -18,10 +18,10 @@ def run_server():
     server = HTTPServer(("localhost", PORT), postRequestHandler)
     click.secho(
         "Currently only problem parsing is supported (contest parsing is not supported)",
-        fg="cyan")
+        fg="cyan",
+    )
     click.secho(f"Listening on port {PORT}", fg="cyan")
-    click.secho("Waiting for competitive companion extension to send data\n",
-                fg="cyan")
+    click.secho("Waiting for competitive companion extension to send data\n", fg="cyan")
     server.handle_request()
 
 
