@@ -1,4 +1,3 @@
-from .addtc.manager import manage as addtc_manage
 from .compile.manager import manage as compile_manage
 from .config.manager import manage as config_manage
 from .create.manager import manage as create_manage

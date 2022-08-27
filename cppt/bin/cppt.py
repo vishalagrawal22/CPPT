@@ -4,7 +4,6 @@ import click
 import sys
 
 from ..commands import (
-    addtc_manage,
     compile_manage,
     config_manage,
     create_manage,
@@ -143,45 +142,6 @@ def compile(filename, base_folder):
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
     compile_manage(filename, base_folder, config_data)
-
-
-@cli.command("addtc", short_help="add a tc to be used in future runs of code")
-@click.argument("filename", type=str)
-@click.argument(
-    "input-path", type=click.Path(exists=True, path_type=Path, dir_okay=False)
-)
-@click.argument(
-    "output-path", type=click.Path(exists=True, path_type=Path, dir_okay=False)
-)
-@click.option(
-    "-p",
-    "--path",
-    "base_folder",
-    default=None,
-    type=click.Path(
-        exists=True,
-        path_type=Path,
-        writable=True,
-        file_okay=False,
-    ),
-    help="path to the folder which contains the souce code",
-)
-def addtc(filename, input_path, output_path, base_folder):
-    """
-    \b
-    Add a testcase to be used in future runs of code
-
-    \b
-    Args:
-
-    \b
-    FILENAME of the source code file with file extension
-    INPUT_PATH: path of file containing input of the testcase
-    OUTPUT_PATH: path of file containing output of the testcase
-    """
-    if base_folder is None:
-        base_folder = Path(config_data["default_base_folder"])
-    addtc_manage(filename, input_path, output_path, base_folder)
 
 
 @cli.group(short_help="commands related to testcase data")

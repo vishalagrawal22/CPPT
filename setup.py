@@ -22,7 +22,6 @@ setup(
         "cppt.utils",
         "cppt.commands.create",
         "cppt.commands.fetch",
-        "cppt.commands.addtc",
         "cppt.commands.run",
         "cppt.commands.config",
         "cppt.commands.compile",
