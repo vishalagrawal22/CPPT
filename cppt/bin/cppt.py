@@ -13,6 +13,7 @@ from ..commands import (
     test_manage,
     view_tc_manage,
     add_tc_manage,
+    edit_tc_manage,
 )
 
 from ..utils.config_manager import get_config_data
@@ -299,6 +300,44 @@ def add(filename, base_folder):
             err=True,
         )
         sys.exit(1)
+
+
+@tc.command(short_help="edit testcases")
+@click.argument("filename", type=str)
+@click.option(
+    "-p",
+    "--path",
+    "base_folder",
+    default=None,
+    type=click.Path(
+        exists=True,
+        path_type=Path,
+        writable=True,
+        file_okay=False,
+    ),
+    help="path to the folder which contains the souce code",
+)
+@click.argument("tcs", nargs=-1)
+def edit(filename, base_folder, tcs):
+    """
+    \b
+    Edit a set of testcases related to FILENAME
+
+    \b
+    Args:
+
+    \b
+    FILENAME of the source code file with file extension
+    TCS: space seperated list of test case numbers (0 for all)
+    """
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+
+    editor = None
+    if "multiline_input_command" in config_data:
+        editor = config_data["multiline_input_command"]
+
+    edit_tc_manage(filename, base_folder, get_cleaned_tcs(tcs), editor)
 
 
 @cli.command("test", short_help="brute force testing")

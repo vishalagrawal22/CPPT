@@ -214,6 +214,25 @@ class Task:
             tc_data.append(self.get_tc(tc_no))
         return tc_data
 
+    def edit_tc(self, tc_no, tc):
+        with open(
+            self.tc_folder / f"in{tc_no}.txt",
+            "w",
+            encoding="utf-8",
+        ) as file:
+            file.writelines(tc["input"])
+
+        with open(
+            self.tc_folder / f"ans{tc_no}.txt",
+            "w",
+            encoding="utf-8",
+        ) as file:
+            file.writelines(tc["output"])
+
+    def edit_tcs(self, tc_nos, tcs):
+        for tc_no, tc in zip(tc_nos, tcs):
+            self.edit_tc(tc_no, tc)
+
 
 def exit_if_invalid_extension(extension):
     if extension not in ["py", "java", "cpp"]:
