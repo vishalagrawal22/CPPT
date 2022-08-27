@@ -1,7 +1,6 @@
 import re
 import subprocess
 import sys
-from pathlib import Path
 
 import click
 
@@ -10,7 +9,7 @@ from .config_manager import get_config_path
 
 # checks if file is empty (only contains white spaces)
 def is_file_empty(file_path):
-    content = open(file_path, "r").read()
+    content = open(file_path, "r", encoding="utf-8").read()
     if re.search(r"^\s*$", content):
         return True
     return False
@@ -28,14 +27,14 @@ def check_diff(file_path1, file_path2):
 
 
 def write_to_file(file_path, text):
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding="utf-8") as file:
         file.write(text)
 
 
 def read_from_file(file_path):
-    file = open(file_path, "r")
-    text = "".join(file.readlines())
-    file.close()
+    text = None
+    with open(file_path, "r", encoding="utf-8") as file:
+        text = "".join(file.readlines())
     return text
 
 
@@ -52,7 +51,7 @@ def print_file(file_path, is_error=0):
         click.secho(f"{file_path.resolve()} is not a file", fg="red", err=True)
         sys.exit(1)
 
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         for line in file.readlines():
             if is_error == 2:
                 click.secho(line, fg="red", err=True, nl=False)
@@ -70,7 +69,7 @@ def open_source_code_in_editor(config_data, file_path):
                 f"Opening {file_path.resolve()} with {config_data['editor']}", fg="cyan"
             )
             try:
-                subprocess.run([config_data["editor"], file_path])
+                subprocess.run([config_data["editor"], file_path], check=True)
             except OSError:
                 click.secho(f"Command not found: {config_data['editor']}", fg="red")
                 click.secho(
