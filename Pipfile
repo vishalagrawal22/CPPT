@@ -10,8 +10,8 @@ pyyaml = "*"
 [dev-packages]
 black = "*"
 twine = "*"
-cppt = {editable = true, path = "."}
 toml = "*"
+cppt = {editable = true, path = "."}
 
 [scripts]
 format = "black ."

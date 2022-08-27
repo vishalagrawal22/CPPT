@@ -1,9 +1,8 @@
 import sys
-from pathlib import Path
 
 import click
 
-from ..utils.file_manager import read_from_file, write_to_file
+from .file_manager import read_from_file, write_to_file
 
 
 def delete_folder(path):
@@ -37,7 +36,7 @@ class Task:
             self.cppt_root_folder.mkdir()
             click.secho("Created cppt root folder", fg="cyan")
         except Exception:
-            click.secho(f"Unable to create cppt root folder", fg="red", err=True)
+            click.secho("Unable to create cppt root folder", fg="red", err=True)
             sys.exit(1)
 
     def create_task(self, tests=None, template_path=None, create_source_code=True):
@@ -51,28 +50,28 @@ class Task:
                     write_to_file(self.source_code, read_from_file(template_path))
                 click.secho("Created source code file", fg="cyan")
             except Exception:
-                click.secho(f"Unable to create source code file", fg="red", err=True)
+                click.secho("Unable to create source code file", fg="red", err=True)
                 sys.exit(1)
 
         try:
             self.task_folder.mkdir()
             click.secho("Created task folder", fg="cyan")
         except Exception:
-            click.secho(f"Unable to create task folder", fg="red", err=True)
+            click.secho("Unable to create task folder", fg="red", err=True)
             sys.exit(1)
 
         try:
             self.tc_folder.mkdir()
             click.secho("Created tc folder", fg="cyan")
         except Exception:
-            click.secho(f"Unable to create tc folder", fg="red", err=True)
+            click.secho("Unable to create tc folder", fg="red", err=True)
             sys.exit(1)
 
         try:
             self.last_run_folder.mkdir()
             click.secho("Created last run folder", fg="cyan")
         except Exception:
-            click.secho(f"Unable to create last run folder", fg="red", err=True)
+            click.secho("Unable to create last run folder", fg="red", err=True)
             sys.exit(1)
 
         if tests is not None:
@@ -87,14 +86,16 @@ class Task:
                 for testcase_element in individual_testcase:
                     prefix = "in" if is_input_file else "ans"
                     with open(
-                        self.tc_folder / f"{prefix}{testcase_number}.txt", "w"
+                        self.tc_folder / f"{prefix}{testcase_number}.txt",
+                        "w",
+                        encoding="utf-8",
                     ) as file:
                         file.writelines(individual_testcase[testcase_element])
                     is_input_file = is_input_file ^ 1
 
                 testcase_number += 1
-        except:
-            click.secho(f"Unable to add testcases", fg="red", err=True)
+        except Exception:
+            click.secho("Unable to add testcases", fg="red", err=True)
             sys.exit(1)
 
     def task_exists(self):
@@ -122,7 +123,7 @@ class Task:
             try:
                 delete_folder(self.task_folder)
                 click.secho("Deleted the existing task folder", fg="cyan")
-            except:
+            except Exception:
                 click.secho(
                     f"Unable to delete task folder at {self.task_folder.resolve()}",
                     fg="red",
@@ -134,7 +135,7 @@ class Task:
             try:
                 self.source_code.unlink()
                 click.secho("Deleted the existing source code file", fg="cyan")
-            except:
+            except Exception:
                 click.secho(
                     f"Unable to delete source code at {self.source_code.resolve()}",
                     fg="red",
