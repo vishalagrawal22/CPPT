@@ -233,6 +233,9 @@ class Task:
         for tc_no, tc in zip(tc_nos, tcs):
             self.edit_tc(tc_no, tc)
 
+    def clear_tcs(self):
+        clear_folder(self.tc_folder)
+
 
 def exit_if_invalid_extension(extension):
     if extension not in ["py", "java", "cpp"]:

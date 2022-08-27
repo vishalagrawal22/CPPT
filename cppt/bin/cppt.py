@@ -14,6 +14,7 @@ from ..commands import (
     view_tc_manage,
     add_tc_manage,
     edit_tc_manage,
+    delete_tc_manage,
 )
 
 from ..utils.config_manager import get_config_data
@@ -338,6 +339,40 @@ def edit(filename, base_folder, tcs):
         editor = config_data["multiline_input_command"]
 
     edit_tc_manage(filename, base_folder, get_cleaned_tcs(tcs), editor)
+
+
+@tc.command(short_help="delete testcases")
+@click.argument("filename", type=str)
+@click.option(
+    "-p",
+    "--path",
+    "base_folder",
+    default=None,
+    type=click.Path(
+        exists=True,
+        path_type=Path,
+        writable=True,
+        file_okay=False,
+    ),
+    help="path to the folder which contains the souce code",
+)
+@click.argument("tcs", nargs=-1, required=True)
+def delete(filename, base_folder, tcs):
+    """
+    \b
+    Delete a set of testcases related to FILENAME
+
+    \b
+    Args:
+
+    \b
+    FILENAME of the source code file with file extension
+    TCS: space seperated list of test case numbers (0 for all)
+    """
+    if base_folder is None:
+        base_folder = Path(config_data["default_base_folder"])
+
+    delete_tc_manage(filename, base_folder, get_cleaned_tcs(tcs))
 
 
 @cli.command("test", short_help="brute force testing")
