@@ -55,28 +55,16 @@ class Task:
 
         try:
             self.task_folder.mkdir()
+            self.tc_folder.mkdir()
+            self.last_run_folder.mkdir()
             click.secho("Created task folder", fg="cyan")
         except Exception:
             click.secho("Unable to create task folder", fg="red", err=True)
             sys.exit(1)
 
-        try:
-            self.tc_folder.mkdir()
-            click.secho("Created tc folder", fg="cyan")
-        except Exception:
-            click.secho("Unable to create tc folder", fg="red", err=True)
-            sys.exit(1)
-
-        try:
-            self.last_run_folder.mkdir()
-            click.secho("Created last run folder", fg="cyan")
-        except Exception:
-            click.secho("Unable to create last run folder", fg="red", err=True)
-            sys.exit(1)
-
         if tests is not None:
             self.add_tests(tests)
-            click.secho("Added Testcases", fg="cyan")
+            click.secho("Created testcase files", fg="cyan")
 
     def add_tests(self, tests, tc_number=1):
         try:
@@ -122,7 +110,7 @@ class Task:
         if self.task_folder.exists():
             try:
                 delete_folder(self.task_folder)
-                click.secho("Deleted the existing task folder", fg="cyan")
+                click.secho("Deleted the existing task folder", fg="red")
             except Exception:
                 click.secho(
                     f"Unable to delete task folder at {self.task_folder.resolve()}",
@@ -134,7 +122,7 @@ class Task:
         if self.source_code.exists():
             try:
                 self.source_code.unlink()
-                click.secho("Deleted the existing source code file", fg="cyan")
+                click.secho("Deleted the existing source code file", fg="red")
             except Exception:
                 click.secho(
                     f"Unable to delete source code at {self.source_code.resolve()}",
