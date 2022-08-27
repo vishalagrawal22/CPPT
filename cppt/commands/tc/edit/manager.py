@@ -33,30 +33,28 @@ def manage(filename, base_folder, tc_nos, editor):
             else:
                 try:
                     testcase = {}
-                    click.secho(f"Input #{tc_number}", fg="cyan")
+                    click.secho(
+                        f"Waiting for input file for #{tc_number} to close", fg="cyan"
+                    )
                     testcase["input"] = click.edit(
                         tc_data["input"],
                         editor=editor,
                     )
 
                     if testcase["input"] is None:
-                        click.secho(
-                            "Input file closed without saving\n", fg="red", err=True
-                        )
-                        sys.exit(1)
+                        testcase["input"] = tc_data["input"]
 
                     click.secho(testcase["input"] + "\n")
 
-                    click.secho(f"Output #{tc_number}", fg="cyan")
+                    click.secho(
+                        f"Waiting for output file for #{tc_number} to close", fg="cyan"
+                    )
                     testcase["output"] = click.edit(
                         tc_data["output"],
                         editor=editor,
                     )
                     if testcase["output"] is None:
-                        click.secho(
-                            "Output file closed without saving\n", fg="red", err=True
-                        )
-                        sys.exit(1)
+                        testcase["output"] = tc_data["output"]
 
                     click.secho(testcase["output"] + "\n")
 
