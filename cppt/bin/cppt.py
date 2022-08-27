@@ -270,37 +270,11 @@ def add(filename, base_folder):
     if base_folder is None:
         base_folder = Path(config_data["default_base_folder"])
 
-    try:
-        editor = None
-        if "multiline_input_command" in config_data:
-            editor = config_data["multiline_input_command"]
+    editor = None
+    if "multiline_input_command" in config_data:
+        editor = config_data["multiline_input_command"]
 
-        testcase = {}
-        testcase["input"] = click.edit(
-            "Enter the input and save the file (delete the help text before saving).\nYou can set the input editor in config file (the default editor is vim, use :q to exit if you opened it by mistake)",
-            editor=editor,
-        )
-        if testcase["input"] is None:
-            click.secho("Input file closed without saving\n", fg="red", err=True)
-            sys.exit(1)
-
-        testcase["output"] = click.edit(
-            "Enter the output and save the file (delete the help text before saving).\nYou can set the input editor in config file (the default editor is vim, use :q to exit if you opened it by mistake)",
-            editor=editor,
-        )
-        if testcase["output"] is None:
-            click.secho("Output file closed without saving\n", fg="red", err=True)
-            sys.exit(1)
-
-        add_tc_manage(filename, base_folder, testcase)
-
-    except click.UsageError:
-        click.secho(
-            "Unable to open editor for testcase input (check config file for potential errors).\n",
-            fg="red",
-            err=True,
-        )
-        sys.exit(1)
+    add_tc_manage(filename, base_folder, editor)
 
 
 @tc.command(short_help="edit testcases")
