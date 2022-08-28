@@ -64,6 +64,12 @@ language:
     template: null
 
 # command which you use to open your editor
-# example: code or subl
+# for vscode: code
+# for sublime: subl
 editor: null
+
+# command to open editor for multiline input
+# for vscode: code --wait
+# for sublime: subl --wait
+multiline_input_command: null
 ```

@@ -49,11 +49,11 @@ Options:
   -h, --help  Show this message and exit.
 
 Commands:
-  addtc    add a tc to be used in future runs of code
   compile  compile source code
   config   get location of config file or reset config file
   create   create a task
   fetch    retrieve testcase data from online judge
   run      run code against testcases
+  tc       commands related to testcase data
   test     brute force testing
 ```
