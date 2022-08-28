@@ -3,7 +3,7 @@ title: Run source code
 sidebar_position: 2
 ---
 
-You can compile (if applied) and run your source code using the **_run_** command. It uses the command specified in the config file to run your source code. It supports running C++, Java, and Python source files.
+You can compile (if applied) and run your source code using the `cppt run` command. It uses the command specified in the config file to run your source code. It supports running C++, Java, and Python source files.
 
 You can run your source code against:-
 
@@ -11,7 +11,7 @@ You can run your source code against:-
 2. specific test case
 3. interactively entered test case
 
-The run command supports the following verdicts:-
+The _run_ command supports the following verdicts:-
 
 1. Accepted
 2. Wrong answer

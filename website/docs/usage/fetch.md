@@ -3,7 +3,7 @@ title: Fetch test case data
 sidebar_position: 1
 ---
 
-You can fetch test case data for any problem (fetching the entire contest at once is **not** supported for now) using the **_fetch_** command and [competitive companion](https://github.com/jmerle/competitive-companion) browser extension. It creates the source file which uses the extension mentioned in the config file (defaults to cpp) and copies your template code into the source file.
+You can fetch test case data for any problem (fetching the entire contest at once is **not** supported for now) using the `cppt fetch` command and [competitive companion](https://github.com/jmerle/competitive-companion) browser extension. It creates the source file which uses the extension mentioned in the config file (defaults to cpp) and copies your template code into the source file.
 
 ## Usage
 
