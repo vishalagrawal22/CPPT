@@ -57,3 +57,44 @@ Commands:
   tc       commands related to testcase data
   test     brute force testing
 ```
+
+### Folder structure
+
+CPPT creates a hidden root folder (.cppt) in every directory where you use **_fetch_** or **_create_** commands to create tasks.
+
+Every task you create has a dedicated subfolder that shares the same name as the task.
+
+Each task folder consists of a **_tc folder_** and a **_last_run folder_** respectively.
+
+The **_tc folder_** consists of all the input files (in{num}.txt) and all the intended output files (ans{num}.txt).
+
+The **_last_run folder_** consists of all files generated in the last run like the standard output files (output{num}.txt), standard error files (error{num}.txt), and compilation_error.txt which consist of the compilation error text if any.
+
+You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the test case verdict (only standard output needs to match the intended output to get accepted).
+
+Example from Meta Hacker Cup 2022 Qualification Round (using `tree -a .` command) :-
+
+```shell
+.
+├── .cppt
+│   ├── A_Second_Hands
+│   │   ├── last_run
+│   │   │   ├── compilation_error.txt
+│   │   │   ├── error1.txt
+│   │   │   └── output1.txt
+│   │   └── tc
+│   │       ├── ans1.txt
+│   │       └── in1.txt
+│   ├── B2_Second_Second_Friend
+│   │   ├── last_run
+│   │   │   ├── compilation_error.txt
+│   │   │   ├── error1.txt
+│   │   │   ├── error2.txt
+│   │   │   ├── output1.txt
+│   │   │   └── output2.txt
+│   │   └── tc
+│   │       ├── ans1.txt
+│   │       ├── ans2.txt
+│   │       ├── in1.txt
+│   │       └── in2.txt
+```
