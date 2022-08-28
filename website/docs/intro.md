@@ -3,11 +3,11 @@ title: Introduction
 sidebar_position: 1
 ---
 
-CPPT is a cross platform command line tool to automate your competitive programming workflow without cluttering your workspace with test case data.
+CPPT is a cross platform command line tool to automate your competitive programming workflow without cluttering your workspace with testcase data.
 
 ## Problem
 
-There are various choices for command line tools in the competitive programming ecosystem like [cpb](https://searleser97.github.io/cpbooster/) and [cf tool](https://github.com/xalanq/cf-tool), which could help you automate various repetitive tasks and make competitive programming more efficient and fun but these tools can fill your source code directory with test case files quickly. If you like to solve many problems from various platforms without changing your work directory, this causes a big mess.
+There are various choices for command line tools in the competitive programming ecosystem like [cpb](https://searleser97.github.io/cpbooster/) and [cf tool](https://github.com/xalanq/cf-tool), which could help you automate various repetitive tasks and make competitive programming more efficient and fun but these tools can fill your source code directory with testcase files quickly. If you like to solve many problems from various platforms without changing your work directory, this causes a big mess.
 
 ## Solution
 
@@ -70,7 +70,7 @@ The **_tc folder_** consists of all the input files (in{num}.txt) and all the in
 
 The **_last_run folder_** consists of all files generated in the last run like the standard output files (output{num}.txt), standard error files (error{num}.txt), and compilation_error.txt which consist of the compilation error text if any.
 
-You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the test case verdict (only standard output needs to match the intended output to get accepted).
+You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the testcase verdict (only standard output needs to match the intended output to get accepted).
 
 Example from Meta Hacker Cup 2022 Qualification Round (using `tree -a .` command) :-
 

@@ -1,6 +1,6 @@
 # Competitive Programming Practice Tool
 
-A command-line tool to automate your competitive programming workflow without cluttering your workspace with test case data.
+A command-line tool to automate your competitive programming workflow without cluttering your workspace with testcase data.
 
 ## Setup Guide
 
@@ -17,13 +17,13 @@ you should see the following help text.
 
 ![help text cppt](https://i.imgur.com/Nj8Eo7L.png)
 
-To fetch test case data from an online judge, you will need [competitive companion](https://github.com/jmerle/competitive-companion) browser extension.
+To fetch testcase data from an online judge, you will need [competitive companion](https://github.com/jmerle/competitive-companion) browser extension.
 
 ## Features
 
-1. Fetch test case data from an online judge.
-2. Compile (if applied) and run source code against the provided or randomly generated test cases.
-3. Add your test cases to run your code on or enter the test case interactively.
+1. Fetch testcase data from an online judge.
+2. Compile (if applied) and run source code against the provided or randomly generated testcases.
+3. Add your testcases to run your code on or enter the testcase interactively.
 4. Create a source code file with your saved templates.
 5. Open the source code automatically in your favourite editor
 

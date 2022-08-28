@@ -7,9 +7,9 @@ You can compile (if applied) and run your source code using the `cppt run` comma
 
 You can run your source code against:-
 
-1. all test cases
-2. specific test case
-3. interactively entered test case
+1. all testcases
+2. specific testcase
+3. interactively entered testcase
 
 The _run_ command supports the following verdicts:-
 
@@ -18,7 +18,7 @@ The _run_ command supports the following verdicts:-
 3. Compilation error
 4. Runtime error
 
-You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the test case verdict (only standard output needs to match the intended output to get accepted).
+You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the testcase verdict (only standard output needs to match the intended output to get accepted).
 
 ## Usage
 
