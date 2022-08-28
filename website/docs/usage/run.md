@@ -3,13 +3,22 @@ title: Run source code
 sidebar_position: 2
 ---
 
-You can compile (if applied) and run your source code using the **_run_** command. It uses the command specified in the config file to run your source code. It supports running C++, Java and Python source files.
+You can compile (if applied) and run your source code using the **_run_** command. It uses the command specified in the config file to run your source code. It supports running C++, Java, and Python source files.
 
-You can run your source code against :-
+You can run your source code against:-
 
-1. all testcases
-2. specific testcase
-3. interactively entered testcase
+1. all test cases
+2. specific test case
+3. interactively entered test case
+
+The run command supports the following verdicts:-
+
+1. Accepted
+2. Wrong answer
+3. Compilation error
+4. Runtime error
+
+You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the test case verdict (only standard output needs to match the intended output to get accepted).
 
 ## Usage
 
