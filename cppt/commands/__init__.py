@@ -4,7 +4,4 @@ from .create.manager import manage as create_manage
 from .fetch.manager import manage as fetch_manage
 from .run.manager import manage as run_manage
 from .test.manager import manage as test_manage
-from .tc.view.manager import manage as view_tc_manage
-from .tc.add.manager import manage as add_tc_manage
-from .tc.edit.manager import manage as edit_tc_manage
-from .tc.delete.manager import manage as delete_tc_manage
+from .tc import add_tc_manage, view_tc_manage, edit_tc_manage, delete_tc_manage
