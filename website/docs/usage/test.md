@@ -1,5 +1,5 @@
 ---
-title: Stress test source code
+title: Stress test task
 sidebar_position: 4
 ---
 
@@ -14,7 +14,7 @@ Currently, the testing speed of this command is slow, so if you are using a Unix
 ## Usage
 
 ```shell
-cppt test -h
+cppt test --help
 ```
 
 ```shell

@@ -10,7 +10,7 @@ It would create a source code file with your template code and allow you to add 
 ## Usage
 
 ```shell
-cppt create -h
+cppt create --help
 ```
 
 ```shell
