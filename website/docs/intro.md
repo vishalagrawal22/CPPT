@@ -21,6 +21,12 @@ CPPT hides all the data required to test your code inside a hidden folder (.cppt
 2. Linux
 3. MacOS
 
+### Supported Languages
+
+1. C++
+2. Java
+3. Python
+
 ### Requirements
 
 1. Python version >= 3.6 and pip installed
