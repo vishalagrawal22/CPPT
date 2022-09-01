@@ -7,11 +7,11 @@ CPPT is a cross platform command line tool to automate your competitive programm
 
 ## Problem
 
-There are various choices for command line tools in the competitive programming ecosystem like [cpb](https://searleser97.github.io/cpbooster/) and [cf tool](https://github.com/xalanq/cf-tool), which could help you automate various repetitive tasks and make competitive programming more efficient and fun but these tools can fill your source code directory with testcase files quickly. If you like to solve many problems from various platforms without changing your work directory, this causes a big mess.
+There already exist various choices for command line tools in the competitive programming ecosystem like [cpb](https://searleser97.github.io/cpbooster/) and [cf tool](https://github.com/xalanq/cf-tool), which could help you automate various repetitive tasks and make competitive programming more efficient and fun. The problem with these tools is they follow the "Flat File Structure" philosophy in which your source code and testcase files are kept in the same folder to improve the speed of manipulating (creating, updating, deleting) them. This approach causes a mess making it hard to navigate between source code files. As changes in testcase are rare, saving a few seconds is manipulating them might not be worth it.
 
 ## Solution
 
-CPPT hides all the data required to test your code inside a hidden folder (.cppt) so that your directory remains clean and you can focus on writing your source code instead.
+CPPT hides all the data required to test your code inside a hidden folder (.cppt) so that your folder remains clean and you can focus on writing your source code instead while providing you with easy-to-use and fast testcase manipulation commands.
 
 ## Getting Started
 
@@ -78,29 +78,4 @@ The **_last_run folder_** consists of all files generated in the last run like t
 
 You can use the **standard error** (like cerr in c++) to **print debugging info**. It will be displayed separately and will not affect the testcase verdict (only standard output needs to match the intended output to get accepted).
 
-Example from Meta Hacker Cup 2022 Qualification Round (using `tree -a .` command) :-
-
-```shell
-.
-├── .cppt
-│   ├── A_Second_Hands
-│   │   ├── last_run
-│   │   │   ├── compilation_error.txt
-│   │   │   ├── error1.txt
-│   │   │   └── output1.txt
-│   │   └── tc
-│   │       ├── ans1.txt
-│   │       └── in1.txt
-│   ├── B2_Second_Second_Friend
-│   │   ├── last_run
-│   │   │   ├── compilation_error.txt
-│   │   │   ├── error1.txt
-│   │   │   ├── error2.txt
-│   │   │   ├── output1.txt
-│   │   │   └── output2.txt
-│   │   └── tc
-│   │       ├── ans1.txt
-│   │       ├── ans2.txt
-│   │       ├── in1.txt
-│   │       └── in2.txt
-```
+![Folder Structure Example](/img/folder-structure.png)
