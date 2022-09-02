@@ -28,3 +28,7 @@ Options:
   -f, --force           overwrite existing files of task
   -h, --help            Show this message and exit.
 ```
+
+## Demo
+
+![Create command demo](/gif/create.gif)

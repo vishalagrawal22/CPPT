@@ -29,3 +29,7 @@ Options:
   -p, --path DIRECTORY  path to the folder which contains the souce code
   -h, --help            Show this message and exit.
 ```
+
+## Demo
+
+![Testcase edit command demo](/gif/tc-edit.gif)

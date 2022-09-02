@@ -30,3 +30,5 @@ Options:
 ```
 
 ## Demo
+
+![Testcase add command demo](/gif/tc-add.gif)

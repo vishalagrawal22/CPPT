@@ -26,3 +26,5 @@ Options:
 ```
 
 ## Demo
+
+![Fetch command demo](/gif/fetch.gif)

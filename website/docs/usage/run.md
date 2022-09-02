@@ -45,3 +45,5 @@ Options:
 ```
 
 ## Demo
+
+![Run command demo](/gif/run.gif)

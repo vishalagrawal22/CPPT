@@ -37,3 +37,7 @@ Options:
                                 code
   -h, --help                    Show this message and exit.
 ```
+
+## Demo
+
+![Test command demo](/gif/stress.gif)
