@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[257],{8949:e=>{e.exports=JSON.parse('{"title":"Usage","slug":"/category/usage","permalink":"/cppt/docs/category/usage","navigation":{"previous":{"title":"Configuration","permalink":"/cppt/docs/config"},"next":{"title":"Fetch testcase data","permalink":"/cppt/docs/usage/fetch"}}}')}}]);
