@@ -5,7 +5,6 @@ import styles from "./styles.module.css";
 const FeatureList = [
   {
     title: "Fetch problems",
-    demo: require("@site/static/gif/fetch.gif").default,
     description: (
       <>
         Retrieve testcase data from online judge and create source code file
@@ -15,14 +14,20 @@ const FeatureList = [
   },
   {
     title: "Run testcases",
-    demo: require("@site/static/gif/run.gif").default,
     description: <>Run your source code against the sample testcases.</>,
   },
   {
     title: "Stress test",
-    demo: require("@site/static/gif/stress.gif").default,
     description: (
       <>Run your source code against randomly generated testcases.</>
+    ),
+  },
+  {
+    title: "Manage testcases",
+    description: (
+      <>
+        Add, view, edit, and delete testcases without filling up your workspace.
+      </>
     ),
   },
 ];
@@ -30,10 +35,7 @@ const FeatureList = [
 function Feature({ demo, title, description }) {
   return (
     <div className={clsx("col col--4")}>
-      <div className="text--center">
-        <img src={demo} alt="demo video" />
-      </div>
-      <div className="text--center padding-horiz--md">
+      <div className={clsx("text--center", styles.feature)}>
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
@@ -43,9 +45,12 @@ function Feature({ demo, title, description }) {
 
 export default function HomepageFeatures() {
   return (
-    <section className={styles.features}>
+    <section>
       <div className="container">
-        <div className="row">
+        <div className={styles["features-heading"]}>
+          <h2>Key Features</h2>
+        </div>
+        <div className={clsx("row", styles["features-list"])}>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}

@@ -1,7 +1,16 @@
-.features {
+.features-heading {
   display: flex;
-  align-items: space-between;
-  flex-wrap: wrap;
+  justify-content: center;
   padding: 2rem 0;
   width: 100%;
+}
+
+.features-list {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.feature {
+  padding: 2rem;
 }
