@@ -1,0 +1,13 @@
+{
+  "position": 3,
+  "label": "Testcase commands",
+  "collapsible": true,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Testcase commands"
+  },
+  "customProps": {
+    "description": "CPPT commands to add, view, edit, delete testcases."
+  }
+}

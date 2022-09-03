@@ -1,0 +1,16 @@
+.features-heading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.features-list {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.feature {
+  padding: 2rem;
+}
