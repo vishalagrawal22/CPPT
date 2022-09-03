@@ -10,7 +10,7 @@ const config = {
   tagline:
     "A command line tool to automate your competitive programming workflow without cluttering your workspace with testcases.",
   url: "https://vishalagrawal22.github.io",
-  baseUrl: "/cppt/",
+  baseUrl: "/CPPT/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
