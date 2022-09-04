@@ -1,5 +1,9 @@
 # Competitive Programming Practice Tool
 
+This document is an overview of the tool. For complete details, refer to the [documentation](https://vishalagrawal22.github.io/CPPT/).
+
+## About
+
 A command-line tool to automate your competitive programming workflow without cluttering your workspace with testcase data.
 
 ## Setup Guide
@@ -36,7 +40,7 @@ To fetch testcase data from an online judge, you will need [competitive companio
 ## Features
 
 1. Fetch testcase data from an online judge.
-2. Compile (if applied) and run source code against the provided or randomly generated testcases.
+2. Compile (if applicable) and run source code against predefined or randomly generated testcases.
 3. Add your testcases to run your code on or enter the testcase interactively.
 4. Create a source code file with your saved templates.
 5. Open the source code automatically in your favourite editor

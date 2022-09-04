@@ -103,7 +103,7 @@ def fetch(base_folder, force):
 def run(filename, base_folder, tc_no, interactive):
     """
     \b
-    Compile (if applied) and run source code on saved testcases
+    Compile (if applicable) and run source code on saved testcases
     using commands specified in the config file
 
     \b
@@ -130,7 +130,7 @@ def run(filename, base_folder, tc_no, interactive):
 def compile(filename, base_folder):
     """
     \b
-    Compile (if applied) the source code
+    Compile (if applicable) the source code
     using commands specified in the config file
 
     \b

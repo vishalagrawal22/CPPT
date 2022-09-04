@@ -18,7 +18,7 @@ cppt compile --help
 ```shell
 Usage: cppt compile [OPTIONS] FILENAME
 
-  Compile (if applied) the source code
+  Compile (if applicable) the source code
   using commands specified in the config file
 
   Args:

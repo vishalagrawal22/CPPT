@@ -3,7 +3,7 @@ title: Run task
 sidebar_position: 2
 ---
 
-You can compile (if applied) and run your source code using the `cppt run` command. It uses the command specified in the config file to run your source code. It supports running C++, Java, and Python source files.
+You can compile (if applicable) and run your source code using the `cppt run` command. It uses the command specified in the config file to run your source code. It supports running C++, Java, and Python source files.
 
 You can run your source code against:-
 
@@ -29,7 +29,7 @@ $ cppt run --help
 ```shell
 Usage: cppt run [OPTIONS] FILENAME
 
-  Compile (if applied) and run source code on saved testcases
+  Compile (if applicable) and run source code on saved testcases
   using commands specified in the config file
 
   Args:

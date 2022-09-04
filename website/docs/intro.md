@@ -3,17 +3,17 @@ title: Introduction
 sidebar_position: 1
 ---
 
-CPPT is a cross platform command line tool to automate your competitive programming workflow without cluttering your workspace with testcase data.
+CPPT is a **cross platform** command line tool to automate your competitive programming workflow **without cluttering** your workspace with testcase data.
 
 ## Problem
 
-There already exist various choices for command line tools in the competitive programming ecosystem like [cpb](https://searleser97.github.io/cpbooster/) and [cf tool](https://github.com/xalanq/cf-tool), which could help you automate various repetitive tasks and make competitive programming more efficient and fun. The problem with these tools is they follow the "Flat File Structure" philosophy in which your source code and testcase files are kept in the same folder to improve the speed of manipulating (creating, updating, deleting) them. This approach causes a mess making it hard to navigate between source code files. As changes in testcase are rare, saving a few seconds is manipulating them might not be worth it.
+There already **exist various choices** for command line tools in the competitive programming ecosystem like [cpb](https://searleser97.github.io/cpbooster/) and [cf tool](https://github.com/xalanq/cf-tool), which could help you automate various repetitive tasks and make competitive programming more efficient and fun. The problem with these tools is they follow the **"Flat File Structure" philosophy** in which your source code and testcase files are kept in the same folder to improve the speed of manipulating (creating, updating, deleting) them. This approach causes a mess making it **hard to navigate** between source code files. As changes in testcase are rare, saving a few seconds is manipulating them might not be worth it.
 
 ![cpb example](/img/cpb.png)
 
 ## Solution
 
-CPPT hides all the data required to test your code inside a hidden folder (.cppt) so that your folder remains clean and you can focus on writing your source code instead while providing you with easy-to-use and fast testcase manipulation commands.
+CPPT **hides** all the data required to test your code inside a hidden subfolder (.cppt) so that your **folder remains clean** and you can **focus on writing your source code** instead while providing you with easy-to-use and fast testcase manipulation commands.
 
 ![cppt example](/img/cppt.png)
 
@@ -21,7 +21,7 @@ CPPT hides all the data required to test your code inside a hidden folder (.cppt
 
 ### Supported Operating Systems
 
-1. Windows (both cmd and wsl)
+1. Windows (both **cmd** and **wsl**)
 2. Linux
 3. MacOS
 

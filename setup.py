@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="cppt",
-    version="1.3.0",
+    version="2.0.0",
     author="Vishal Agrawal",
     author_email="vishalagrawalva22@gmail.com",
     description="Command line tool to automate your competitive programming workflow without cluttering your workspace with testcase data",
